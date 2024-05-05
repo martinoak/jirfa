@@ -1,0 +1,148 @@
+{layout '../layout.latte'}
+
+{block content}
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+    <div class="px-3 py-3 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center justify-start">
+                <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                    </svg>
+                </button>
+                <a href="{route('admin.dashboard')}" class="flex ms-2 md:me-24">
+                    <img src="{asset('images/logo.png')}" class="me-3" alt="" />
+                </a>
+            </div>
+            <div class="flex items-center">
+                <div class="flex items-center ms-3 gap-4">
+                    <p class="flex items-center"><img src="https://cdn.icon-icons.com/icons2/2389/PNG/512/php_logo_icon_144990.png" class="w-auto h-8 me-2"> <span>{phpversion()}</span></p>
+                    <p class="flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/50px-Laravel.svg.png" class="w-4 h-4 me-2"> {\Illuminate\Foundation\Application::VERSION}</p>
+                    <div>
+                        <button type="button" class="flex text-sm" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <img src="data:image/jpeg;base64,{\Illuminate\Support\Facades\Auth::user()->profile_picture|noescape}" class="w-8 h-8 rounded-full" alt="{\Illuminate\Support\Facades\Auth::user()->name}" />
+                        </button>
+                    </div>
+                    <div class="z-50 hidden m-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow w-[150px]" id="dropdown-user">
+                        <div class="px-4 py-3" role="none">
+                            <p class="text-sm text-gray-900" role="none">
+                                {\Illuminate\Support\Facades\Auth::user()->name}
+                            </p>
+                            <p class="text-sm font-medium text-gray-900 truncate" role="none">
+                                {\Illuminate\Support\Facades\Auth::user()->email}
+                            </p>
+                        </div>
+                        <ul class="py-1" role="none">
+                            <li>
+                                <a href="{route('logout')}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Odhlásit se</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0" aria-label="Sidebar">
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
+        <ul class="space-y-2 font-medium">
+            <li>
+                <a href="{route('reference.index')}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <i class="fa-solid fa-heart fa-lg text-red-600"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Reference</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <i class="fa-solid fa-medal fa-lg text-red-600"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Certifikáty</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+<div class="p-4 sm:ml-64">
+    <div class="grid grid-cols-3 gap-4 mb-4 mt-[60px]">
+        <div class="flex items-center justify-center h-24 rounded bg-gray-50">
+            <p class="text-2xl text-gray-400">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+            </p>
+        </div>
+        <div class="flex items-center justify-center h-24 rounded bg-gray-50">
+            <p class="text-2xl text-gray-400">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+            </p>
+        </div>
+        <div class="flex items-center justify-center h-24 rounded bg-gray-50">
+            <p class="text-2xl text-gray-400">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                Zákazníci z kontaktního formuláře
+            </caption>
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Jméno
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    E-mail
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Telefon
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Adresa
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Zpráva
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $customers as $customer}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-bold text-gray-900 whitespace-nowrap">
+                        {$customer->name}
+                    </th>
+                    <td class="px-6 py-4">
+                        {$customer->email}
+                    </td>
+                    <td class="px-6 py-4">
+                        {$customer->tel}
+                    </td>
+                    <td class="px-6 py-4">
+                        {$customer->city}, {$customer->zip}
+                    </td>
+                    <td class="px-6 py-4">
+                        {$customer->message}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Akce</a>
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{/block}

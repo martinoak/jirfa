@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactForm;
 use App\Mail\ContactFormConfirm;
+use App\Models\Customer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -35,6 +36,8 @@ class HomepageController extends Controller
 
         Mail::to(config('mail.from.address'))->send(new ContactForm($request->all()));
         Mail::to($request->input('email'))->send(new ContactFormConfirm($request->input('message')));
+
+        Customer::create($request->except('_token'));
 
         return to_route('homepage');
     }

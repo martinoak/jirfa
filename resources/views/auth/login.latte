@@ -1,0 +1,35 @@
+{layout '../layout.latte'}
+
+{block content}
+    <div class="flex h-screen flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            <img class="mx-auto w-auto" src="{asset('images/logo.png')}" alt="JIRFA s.r.o.">
+        </div>
+
+        <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form class="space-y-6" action="{route('authenticate')}" method="POST">
+                {csrf_field()|noescape}
+                <div>
+                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
+                    <div class="mt-2">
+                        <input id="email" name="email" type="email" required class="block w-full rounded-md border py-1.5 px-2 text-gray-900 shadow-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between">
+                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Heslo</label>
+                    </div>
+                    <div class="mt-2">
+                        <input id="password" name="password" type="password" required class="block w-full rounded-md border py-1.5 px-2 text-gray-900 shadow-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500">Přihlásit se</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{/block}
