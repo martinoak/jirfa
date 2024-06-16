@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewDemandRequest;
 use App\Mail\ContactForm;
 use App\Mail\ContactFormConfirm;
 use App\Models\Customer;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class HomepageController extends Controller
@@ -18,26 +18,25 @@ class HomepageController extends Controller
         return view('homepage');
     }
 
-    public function email(Request $request): RedirectResponse
+    public function email(NewDemandRequest $request): RedirectResponse
     {
-        $validator = Validator::validate($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'tel' => 'required|min:9',
-            'message' => 'required'
-        ], [
-            'name.required' => 'Pole se jménem je povinné',
-            'email.required' => 'Pole s emailem je povinné',
-            'email.email' => 'Email není ve správném formátu',
-            'tel.required' => 'Pole s telefonem je povinné',
-            'tel.min' => 'Telefoní číslo musí mít alespoň 9 znaků',
-            'message.required' => 'Pole se zprávou je povinné'
-        ]);
+        $secretKey = env('GOOGLE_RECAPTCHA_SECRET_KEY');
+        $responseKey = $request->get('recaptcha_response');
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$responseKey&remoteip=$ip";
+        $response = file_get_contents($url);
+        $responseKeys = json_decode($response, true);
+
+        if (intval($responseKeys["success"]) !== 1) {
+            Log::info('Recaptcha failed', ['data' => $request->all()]);
+            abort(403, 'Recaptcha failed');
+        }
+
+        Customer::create($request->except('_token'));
 
         Mail::to(config('mail.from.address'))->send(new ContactForm($request->all()));
         Mail::to($request->input('email'))->send(new ContactFormConfirm($request->input('message')));
-
-        Customer::create($request->except('_token'));
 
         return to_route('homepage');
     }

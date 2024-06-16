@@ -16,14 +16,24 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous"
     >
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css"
-          integrity="sha384-FqucWMol8QyTdDo4qAnGLnjtrO5pTFLLzTz1mzlG0SpZoRz3iH4Z19iYblzH15+4"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.css"
           integrity="sha512-Woz+DqWYJ51bpVk5Fv0yES/edIMXjj3Ynda+KWTIkGoynAMHrqTcDUQltbipuiaD5ymEo9520lyoVOo9jCQOCA=="
           crossorigin="anonymous">
     <link rel="stylesheet" href="{asset('css/style.css')}">
+
+    <script src="https://www.google.com/recaptcha/api.js?render={env('GOOGLE_RECAPTCHA_SITE_KEY')}"></script>
+    <script>
+        grecaptcha.ready(function() {
+            document.getElementById('contactForm').addEventListener("submit", function(event) {
+                event.preventDefault();
+                grecaptcha.execute({env('GOOGLE_RECAPTCHA_SITE_KEY')}, { action: 'contact' }).then(function(token) {
+                    document.getElementById("recaptchaResponse").value= token;
+                    document.getElementById('contactForm').submit();
+                });
+            }, false);
+        });
+    </script>
 
     <title>JIRFA s.r.o | Vaše střecha je náš problém!</title>
 </head>
@@ -88,7 +98,7 @@
             <h2>
                 <a class="reference-button text-decoration-none inline-d-flex align-items-center shadow-sm"
                    href="#reference">
-                    Naše reference <i class="far fa-caret-circle-right ms-2"></i>
+                    Naše reference <i class="fa-solid fa-angles-down"></i>
                 </a>
             </h2>
         </div>
@@ -118,22 +128,22 @@
         <div class="services-content text-center row d-flex">
             <div class="services-detail col-6 col-md-4 col-lg-2">
                 <div class="services-icon">
-                    <i class="fas fa-chimney"></i>
+                    <i class="fa-solid fa-house-chimney"></i>
                 </div>
                 <h4 class="mb-3">Střechy</h4>
                 <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
                    data-value="strechy" href="#reference">
-                    Reference <i class="far fa-caret-right ms-2"></i>
+                    Reference <i class="fa-solid fa-angle-right"></i>
                 </a>
             </div>
             <div class="services-detail col-6 col-md-4 col-lg-2">
                 <div class="services-icon">
-                    <i class="fas fa-garage-car"></i>
+                    <i class="fa-solid fa-warehouse"></i>
                 </div>
                 <h4 class="mb-3">Garáže</h4>
                 <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
                    data-value="garaze" href="#reference">
-                    Reference <i class="far fa-caret-right ms-2"></i>
+                    Reference <i class="fa-solid fa-angle-right"></i>
                 </a>
             </div>
             <div class="services-detail col-6 col-md-4 col-lg-2">
@@ -143,7 +153,7 @@
                 <h4 class="mb-3">Podlahy</h4>
                 <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
                    data-value="podlahy" href="#reference">
-                    Reference <i class="far fa-caret-right ms-2"></i>
+                    Reference <i class="fa-solid fa-angle-right"></i>
                 </a>
             </div>
             <div class="services-detail col-6 col-md-4 col-lg-2">
@@ -153,27 +163,27 @@
                 <h4 class="mb-3">Pergoly</h4>
                 <a class="reference-button-small  text-decoration-none inline-d-flex align-items-center shadow-sm"
                    data-value="pergoly" href="#reference">
-                    Reference <i class="far fa-caret-right ms-2"></i>
+                    Reference <i class="fa-solid fa-angle-right"></i>
                 </a>
             </div>
             <div class="services-detail col-6 col-md-4 col-lg-2">
                 <div class="services-icon">
-                    <i class="fas fa-triangle"></i>
+                    <i class="fa-solid fa-caret-up"></i>
                 </div>
                 <h4 class="mb-3">Štíty</h4>
                 <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
                    data-value="stity" href="#reference">
-                    Reference <i class="far fa-caret-right ms-2"></i>
+                    Reference <i class="fa-solid fa-angle-right"></i>
                 </a>
             </div>
             <div class="services-detail col-6 col-md-4 col-lg-2">
                 <div class="services-icon">
-                    <i class="fas fa-plus"></i>
+                    <i class="fa-solid fa-plus"></i>
                 </div>
                 <h4 class="mb-3">Ostatní</h4>
                 <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
                    data-value="ostatni" href="#reference">
-                    Reference <i class="far fa-caret-right ms-2"></i>
+                    Reference <i class="fa-solid fa-angle-right"></i>
                 </a>
             </div>
         </div>
@@ -230,7 +240,7 @@
     <div class="container">
         <h3 class="font-weight-bold title">Reference</h3>
         <div class="col-md-4">
-            <i class="fas fa-filter color-primary me-3"></i>
+            <i class="fa-solid fa-filter color-primary me-2"></i>
             <select class="custom-select col-6 col-md-10 col-lg-6" id="selectType">
                 <option selected value="vse">Vše</option>
                 <option value="strechy">Střechy</option>
@@ -248,7 +258,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Garáž<br>Praha-Pankrác</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -265,7 +275,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Plzeň<br>krov pipovaru</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -282,7 +292,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Pergola<br>Hřivnov</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -298,7 +308,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Pergola<br>Načeradec</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -314,7 +324,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Podlahy<br>Jičín</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -331,7 +341,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Obložení<br>klimatizace</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -348,7 +358,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Střecha<br>Kolovraty</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -369,7 +379,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Štít<br>Středokluky</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -388,7 +398,7 @@
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Domov důchodců<br>Praha 4</li>
-                                <li class="mt-5"><i class="fas fa-search-plus fs-2"></i></li>
+                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
@@ -440,14 +450,14 @@
                     <li>140 00</li>
                     <li>Praha 4</li>
                     <li class="pt-2">
-                        <p class="text-decoration-none"><i class="fas fa-briefcase me-2"></i> IČO: 27143287</p>
+                        <p class="text-decoration-none"><i class="fa-solid fa-briefcase me-2"></i> IČO: 27143287</p>
                     </li>
                     <li><a href="https://jirfa.cz" class="text-decoration-none color-secondary link">
-                            <i class="fas fa-globe color-secondary me-2"></i>jirfa.cz
+                            <i class="fa-solid fa-globe color-secondary me-2"></i>jirfa.cz
                         </a>
                     </li>
                     <li class="pt-2 d-block d-sm-none">
-                        <span class="text-decoration-none color-secondary link" data-bs-toggle="modal" data-bs-target="#bd-example-modal-lg"><i class="fas fa-map-marker-alt me-2"></i>Mapa</span>
+                        <span class="text-decoration-none color-secondary link" data-bs-toggle="modal" data-bs-target="#bd-example-modal-lg"><i class="fa-solid fa-location-dot me-2"></i>Mapa</span>
                     </li>
                 </ul>
             </div>
@@ -466,8 +476,8 @@
                 <div class="mb-3">
                     <ul class="lst-none p-0">
                         <li>Jiří Šteker</li>
-                        <li><i class="fas fa-phone-alt color-primary phone-icon"></i>
-                            <a href="tel:+420606094834" class="color-primary link">+420 606 094 834</a></li>
+                        <li><i class="fa-solid fa-phone-volume color-primary phone-icon me-2"></i>
+                        <a href="tel:+420606094834" class="color-primary link">+420 606 094 834</a></li>
                     </ul>
                 </div>
             </div>
@@ -479,11 +489,15 @@
             </div>
             <div class="col-12 col-md-6">
                 <h4>Ozvěte se nám!</h4>
-                <form action="{route('email')}" method="post">
+                {foreach $errors->all() as $error}
+                    <p style="color: red;margin-bottom: 5px">{$error}</p>
+                {/foreach}
+                <form action="{route('email')}" method="post" id="contactForm">
                     {csrf_field()|noescape}
+                    <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                     <div class="form-row">
                         <div class="form-group col-md-10">
-                            <label for="name">Vaše jméno a příjmení</label>
+                            <label for="name">Vaše jméno a příjmení <i class="fa-solid fa-star color-primary"></i></label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Jan Novák" required>
                         </div>
                     </div>
@@ -513,7 +527,7 @@
                             <textarea rows="5" class="form-control" id="text" name="message" placeholder="Dobrý den!" required></textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary bg-primary border-0 mt-3" role="button">Odeslat e-mail</button>
+                    <button type="submit" class="btn btn-primary bg-primary border-0 mt-3 g-recaptcha" role="button">Odeslat e-mail</button>
                     <p class="col-7 fw-bold" id="mailSuccess"></p>
                 </form>
             </div>
@@ -536,7 +550,7 @@
         </div>
     </div>
 </footer>
-<a id="backToTop" class="back-to-top" href="#" title="Back to top" role="button"><i class="fas fa-caret-circle-up"></i></a>
+<a id="backToTop" class="back-to-top" href="#" title="Back to top" role="button"><i class="fa-solid fa-angle-up"></i></a>
 
 <script type="module"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
