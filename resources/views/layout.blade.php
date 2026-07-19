@@ -13,7 +13,7 @@
     <!-- ===== All CSS files ===== -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}?m={{ filemtime(public_path('css/tailwind.css')) }}" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @yield('head')
 </head>
@@ -24,6 +24,6 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
-@yield('bottomscripts')
+@yield('scripts')
 
 </html>

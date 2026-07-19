@@ -12,12 +12,98 @@ function loadAfterDom() {
     document
         .getElementById("selectType")
         .addEventListener("change", selectChange);
+    initNavToggle();
+    initDropdown();
+    initMapModal();
 }
 
 function navigationItemClick(event) {
     let value = event.target.getAttribute("data-value");
     filterSelection(value);
     document.getElementById("selectType").value = value;
+    closeDropdown();
+}
+
+// -------------------------------------
+// Mobilní navigace (nahrazuje Bootstrap collapse)
+// -------------------------------------
+function initNavToggle() {
+    const toggle = document.getElementById("navToggle");
+    const menu = document.getElementById("navbarSupportedContent");
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener("click", function () {
+        const opened = !menu.classList.toggle("hidden");
+        toggle.setAttribute("aria-expanded", opened ? "true" : "false");
+    });
+}
+
+// -------------------------------------
+// Rozbalovací menu Reference (nahrazuje Bootstrap dropdown)
+// -------------------------------------
+function initDropdown() {
+    const button = document.getElementById("navbarDropdown");
+    const menu = document.getElementById("navbarDropdownMenu");
+    if (!button || !menu) return;
+
+    button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const opened = !menu.classList.toggle("hidden");
+        button.setAttribute("aria-expanded", opened ? "true" : "false");
+    });
+
+    // Kliknutí mimo menu jej zavře
+    document.addEventListener("click", function (event) {
+        if (!menu.contains(event.target) && !button.contains(event.target)) {
+            closeDropdown();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeDropdown();
+    });
+}
+
+function closeDropdown() {
+    const button = document.getElementById("navbarDropdown");
+    const menu = document.getElementById("navbarDropdownMenu");
+    if (!button || !menu) return;
+    menu.classList.add("hidden");
+    button.setAttribute("aria-expanded", "false");
+}
+
+// -------------------------------------
+// Modální okno s mapou (nahrazuje Bootstrap modal)
+// -------------------------------------
+function initMapModal() {
+    const modal = document.getElementById("mapModal");
+    if (!modal) return;
+
+    const openers = document.querySelectorAll("[data-modal-open]");
+    for (let index = 0; index < openers.length; index++) {
+        openers[index].addEventListener("click", function () {
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        });
+    }
+
+    // Zavření křížkem nebo kliknutím na pozadí
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal || event.target.closest("[data-modal-close]")) {
+            closeMapModal();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeMapModal();
+    });
+}
+
+function closeMapModal() {
+    const modal = document.getElementById("mapModal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
 }
 
 function selectChange(event) {

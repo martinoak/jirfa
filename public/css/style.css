@@ -16,7 +16,9 @@ body {
 }
 
 hr {
-    color: #dc3545 !important
+    color: #dc3545 !important;
+    /* Bez tohoto by hr převzalo šedou barvu z výchozího nastavení Tailwindu */
+    border-color: currentColor
 }
 
 .link:hover {
@@ -76,17 +78,13 @@ nav #logo {
     width: 7.5rem
 }
 
-.nav-item:hover {
-    color: #0066ff !important
+.nav-link {
+    font-weight: bold;
+    cursor: pointer
 }
 
-.navbar-light .navbar-nav .nav-link {
-    font-weight: bold
-}
-
-
-.navbar-light .navbar-nav .nav-link:hover {
-    color: #dc3545 !important
+.nav-link:hover {
+    color: #dc3545
 }
 
 .dropdown-item {

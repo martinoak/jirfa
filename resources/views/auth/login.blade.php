@@ -12,7 +12,7 @@
                 <div>
                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
                     <div class="mt-2">
-                        <input id="email" name="email" type="email" required class="block w-full rounded-md border py-1.5 px-2 text-gray-900 shadow-sm sm:leading-6">
+                        <input id="email" name="email" type="email" required class="block w-full rounded-md border py-1.5 px-2 text-gray-900 shadow-xs sm:leading-6">
                     </div>
                 </div>
 
@@ -21,12 +21,12 @@
                         <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Heslo</label>
                     </div>
                     <div class="mt-2">
-                        <input id="password" name="password" type="password" required class="block w-full rounded-md border py-1.5 px-2 text-gray-900 shadow-sm sm:leading-6">
+                        <input id="password" name="password" type="password" required class="block w-full rounded-md border py-1.5 px-2 text-gray-900 shadow-xs sm:leading-6">
                     </div>
                 </div>
 
                 <div>
-                    <button type="submit" class="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500">Přihlásit se</button>
+                    <button type="submit" class="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xs hover:bg-red-500">Přihlásit se</button>
                 </div>
             </form>
         </div>

@@ -10,17 +10,8 @@
 
     <link rel="icon" href="{{ asset('favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous"
-    >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.css"
-          integrity="sha512-Woz+DqWYJ51bpVk5Fv0yES/edIMXjj3Ynda+KWTIkGoynAMHrqTcDUQltbipuiaD5ymEo9520lyoVOo9jCQOCA=="
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"></script>
     <script>
@@ -37,79 +28,116 @@
 
     <title>JIRFA s.r.o | Vaše střecha je náš problém!</title>
 </head>
-<body>
+<body class="font-sans text-gray-900 antialiased">
+<a href="#sluzby" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg">
+    Přeskočit na obsah
+</a>
+
 <header role="banner">
     <!-- Navigace -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light py-3">
-        <div class="container d-flex align-items-start">
-            <a class="navbar-brand" href="#">
-                <img id="logo" src="{{ asset('images/logo.png') }}" width="108" height="24" alt="Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#sluzby">Služby</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#certifikaty">Certifikáty</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                           href="#reference"
-                           id="navbarDropdown"
-                           role="button"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false">
+    <nav x-data="siteNav" @keydown.escape.window="closeAll()"
+         class="fixed inset-x-0 top-0 z-50 transition-shadow duration-300"
+         :class="scrolled ? 'bg-white/95 shadow-md backdrop-blur-sm' : 'bg-white'">
+        <div class="container mx-auto px-4">
+            <div class="flex h-16 items-center justify-between">
+                <a href="#" class="shrink-0" aria-label="JIRFA s.r.o. — domů">
+                    <img id="logo" src="{{ asset('images/logo.png') }}" width="108" height="24" alt="JIRFA s.r.o." class="w-28">
+                </a>
+
+                <button type="button"
+                        @click="mobileOpen = !mobileOpen"
+                        :aria-expanded="mobileOpen ? 'true' : 'false'"
+                        aria-controls="mainMenu"
+                        aria-label="Otevřít menu"
+                        class="rounded-md p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden">
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path x-show="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path x-show="mobileOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                <!-- Navigace pro velká zobrazení -->
+                <ul class="hidden items-center gap-8 lg:flex">
+                    <li><a href="#sluzby" class="font-semibold text-gray-700 transition hover:text-brand">Služby</a></li>
+                    <li><a href="#certifikaty" class="font-semibold text-gray-700 transition hover:text-brand">Certifikáty</a></li>
+                    <li class="relative" @click.outside="dropdownOpen = false">
+                        <button type="button"
+                                @click="dropdownOpen = !dropdownOpen"
+                                :aria-expanded="dropdownOpen ? 'true' : 'false'"
+                                aria-controls="referenceMenu"
+                                class="flex items-center gap-1.5 font-semibold text-gray-700 transition hover:text-brand">
                             Reference
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" data-value="strechy" href="#reference">Střechy</a></li>
-                            <li><a class="dropdown-item" data-value="podlahy" href="#reference">Podlahy</a></li>
-                            <li><a class="dropdown-item" data-value="garaze" href="#reference">Garáže</a></li>
-                            <li><a class="dropdown-item" data-value="pergoly" href="#reference">Pergoly</a></li>
-                            <li><a class="dropdown-item" data-value="stity" href="#reference">Štíty</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" data-value="vse" href="#reference">Zobrazit vše</a></li>
+                            <svg class="h-3 w-3 transition-transform duration-200" :class="dropdownOpen && 'rotate-180'"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <ul id="referenceMenu"
+                            x-show="dropdownOpen"
+                            x-cloak
+                            x-transition.opacity.duration.150ms
+                            class="absolute left-0 z-50 mt-3 w-48 overflow-hidden rounded-lg bg-white py-2 shadow-xl ring-1 ring-gray-200">
+                            @foreach (['strechy' => 'Střechy', 'podlahy' => 'Podlahy', 'garaze' => 'Garáže', 'pergoly' => 'Pergoly', 'stity' => 'Štíty'] as $value => $label)
+                                <li>
+                                    <a href="#reference"
+                                       @click="dropdownOpen = false; $dispatch('filter-reference', '{{ $value }}')"
+                                       class="block px-4 py-2 font-medium text-gray-700 transition hover:bg-brand hover:text-white">{{ $label }}</a>
+                                </li>
+                            @endforeach
+                            <li><hr class="my-2 border-gray-200"></li>
+                            <li>
+                                <a href="#reference"
+                                   @click="dropdownOpen = false; $dispatch('filter-reference', 'vse')"
+                                   class="block px-4 py-2 font-medium text-gray-700 transition hover:bg-brand hover:text-white">Zobrazit vše</a>
+                            </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#kontakt">Kontakt</a>
-                    </li>
-                    <!--
-                    <hr class="dropdown-divider">
-                    <li class="nav-item">
-                        <a class="nav-link color-primary" aria-current="page" href="#">Administrace</a>
-                    </li>
-                    -->
+                    <li><a href="#kontakt" class="font-semibold text-gray-700 transition hover:text-brand">Kontakt</a></li>
                 </ul>
             </div>
+
+            <!-- Navigace pro malá zobrazení -->
+            <ul id="mainMenu" x-show="mobileOpen" x-cloak x-transition.opacity
+                class="border-t border-gray-200 py-3 lg:hidden">
+                <li><a href="#sluzby" @click="closeAll()" class="block rounded-md px-2 py-2 font-semibold text-gray-700 hover:bg-gray-100">Služby</a></li>
+                <li><a href="#certifikaty" @click="closeAll()" class="block rounded-md px-2 py-2 font-semibold text-gray-700 hover:bg-gray-100">Certifikáty</a></li>
+                <li><a href="#reference" @click="closeAll()" class="block rounded-md px-2 py-2 font-semibold text-gray-700 hover:bg-gray-100">Reference</a></li>
+                <li><a href="#kontakt" @click="closeAll()" class="block rounded-md px-2 py-2 font-semibold text-gray-700 hover:bg-gray-100">Kontakt</a></li>
+            </ul>
         </div>
     </nav>
     <!-- Navigace -->
 
-    <div class="container-fluid hero">
-        <div class="text-center">
-            <h1 class="header-title">Vaše střecha je náš problém!</h1>
-            <h2>
-                <a class="reference-button text-decoration-none inline-d-flex align-items-center shadow-sm"
-                   href="#reference">
-                    Naše reference <i class="fa-solid fa-angles-down"></i>
+    <div class="hero flex min-h-[32rem] items-center justify-center pt-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl leading-tight font-extrabold text-white sm:text-5xl lg:text-6xl">
+                Vaše střecha je náš problém!
+            </h1>
+            <p class="mx-auto mt-6 max-w-2xl text-lg text-white/90">
+                Střechy, pergoly, garáže a dřevostavby na klíč. Cenovou nabídku zpracujeme zdarma.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <a href="#reference"
+                   class="inline-flex items-center gap-2 rounded-lg bg-brand px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl">
+                    Naše reference <i class="fa-solid fa-angles-down" aria-hidden="true"></i>
                 </a>
-            </h2>
+                <a href="#kontakt"
+                   class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-8 py-4 text-lg font-bold text-white ring-2 ring-white/70 backdrop-blur-sm transition hover:bg-white hover:text-gray-900">
+                    Nezávazná poptávka
+                </a>
+            </div>
         </div>
     </div>
 </header>
 
-<section id="sluzby" class="services-area">
-    <div class="container">
-        <h3 class="font-weight-bold title">Čím se zabýváme</h3>
-        <div class="pt-4">
-            <p><strong>Stavební firma JIRFA, s.r.o. </strong>se specializuje na dodávky a montáže všech typů střech a krytin, pergol,
+<main>
+<section id="sluzby" class="scroll-mt-24 py-20">
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl font-semibold sm:text-4xl">Čím se zabýváme</h2>
+        <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-brand"></div>
+
+        <div class="mx-auto mt-10 max-w-4xl space-y-4 text-gray-700">
+            <p><strong class="font-semibold text-gray-900">Stavební firma JIRFA, s.r.o. </strong>se specializuje na dodávky a montáže všech typů střech a krytin, pergol,
                 garážových stání a dřevostaveb, včetně celkových oprav střešních plášťů, pokrývačských a klempířských
                 prací a dále na veškeré sádrokartonářské práce. Také se zaměřujeme na opravu památkově chráněných
                 objektů pod dozorem památkového úřadu.</p>
@@ -118,448 +146,323 @@
                 V naší načeradské pobočce máme plně vybavenou truhlářskou dílnu (truhlářské a tesařské stroje a nářadí
                 na výrobu hoblovaných pergol a vazeb). Součástí areálu jsou také sklady o rozloze 3000m2 , kde máme
                 uskladněno a připraveno ihned k prodeji řezivo, střešní latě, prkna, fošny nebo hranoly.</p>
-            <p>Stavební firma JIRFA, s.r.o. je držitelem certifikátů: <strong>BRAMAC</strong>, <strong>VELUX</strong>,
-                <strong>ISOVER</strong>, protipožární systémy <strong>RIGIPS</strong>, hydropojistné fólie a další.
+            <p>Stavební firma JIRFA, s.r.o. je držitelem certifikátů: <strong class="font-semibold text-gray-900">BRAMAC</strong>, <strong class="font-semibold text-gray-900">VELUX</strong>,
+                <strong class="font-semibold text-gray-900">ISOVER</strong>, protipožární systémy <strong class="font-semibold text-gray-900">RIGIPS</strong>, hydropojistné fólie a další.
                 JIRFA, s.r.o. má uzavřenou smlouvu na pojištění odpovědnosti za způsobenou škodu třetím osobám při
                 výkonu své činnosti až do výše 10 mil.Kč. Všichni naši zaměstnanci jsou řádně proškoleni v oblasti
                 bezpečnosti práce a práce ve výškách.</p>
-            <p>V případě zájmu o naše služby Vám <strong>zdarma</strong> vypracujeme cenovou nabídku.</p>
+            <p>V případě zájmu o naše služby Vám <strong class="font-semibold text-gray-900">zdarma</strong> vypracujeme cenovou nabídku.</p>
         </div>
-        <div class="services-content text-center row d-flex">
-            <div class="services-detail col-6 col-md-4 col-lg-2">
-                <div class="services-icon">
-                    <i class="fa-solid fa-house-chimney"></i>
+
+        <div x-data class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach ([
+                ['strechy', 'Střechy', 'fa-solid fa-house-chimney'],
+                ['garaze', 'Garáže', 'fa-solid fa-warehouse'],
+                ['podlahy', 'Podlahy', 'fa-solid fa-layer-group'],
+                ['pergoly', 'Pergoly', 'fa-solid fa-store'],
+                ['stity', 'Štíty', 'fa-solid fa-caret-up'],
+                ['ostatni', 'Ostatní', 'fa-solid fa-plus'],
+            ] as [$value, $label, $icon])
+                <div class="group flex flex-col items-center rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-lg">
+                    <div class="flex h-16 w-16 items-center justify-center rounded-full bg-brand-light text-3xl text-brand transition group-hover:bg-brand group-hover:text-white">
+                        <i class="{{ $icon }}" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="mt-5 text-xl font-semibold">{{ $label }}</h3>
+                    <a href="#reference"
+                       @click="$dispatch('filter-reference', '{{ $value }}')"
+                       class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition hover:gap-2.5">
+                        Reference <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
+                    </a>
                 </div>
-                <h4 class="mb-3">Střechy</h4>
-                <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
-                   data-value="strechy" href="#reference">
-                    Reference <i class="fa-solid fa-angle-right"></i>
-                </a>
-            </div>
-            <div class="services-detail col-6 col-md-4 col-lg-2">
-                <div class="services-icon">
-                    <i class="fa-solid fa-warehouse"></i>
-                </div>
-                <h4 class="mb-3">Garáže</h4>
-                <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
-                   data-value="garaze" href="#reference">
-                    Reference <i class="fa-solid fa-angle-right"></i>
-                </a>
-            </div>
-            <div class="services-detail col-6 col-md-4 col-lg-2">
-                <div class="services-icon">
-                    <i class="fas fa-layer-group"></i>
-                </div>
-                <h4 class="mb-3">Podlahy</h4>
-                <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
-                   data-value="podlahy" href="#reference">
-                    Reference <i class="fa-solid fa-angle-right"></i>
-                </a>
-            </div>
-            <div class="services-detail col-6 col-md-4 col-lg-2">
-                <div class="services-icon">
-                    <i class="fas fa-store-alt"></i>
-                </div>
-                <h4 class="mb-3">Pergoly</h4>
-                <a class="reference-button-small  text-decoration-none inline-d-flex align-items-center shadow-sm"
-                   data-value="pergoly" href="#reference">
-                    Reference <i class="fa-solid fa-angle-right"></i>
-                </a>
-            </div>
-            <div class="services-detail col-6 col-md-4 col-lg-2">
-                <div class="services-icon">
-                    <i class="fa-solid fa-caret-up"></i>
-                </div>
-                <h4 class="mb-3">Štíty</h4>
-                <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
-                   data-value="stity" href="#reference">
-                    Reference <i class="fa-solid fa-angle-right"></i>
-                </a>
-            </div>
-            <div class="services-detail col-6 col-md-4 col-lg-2">
-                <div class="services-icon">
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-                <h4 class="mb-3">Ostatní</h4>
-                <a class="reference-button-small text-decoration-none inline-d-flex align-items-center shadow-sm"
-                   data-value="ostatni" href="#reference">
-                    Reference <i class="fa-solid fa-angle-right"></i>
-                </a>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
 
-<section id="certifikaty" class="certificate-area">
+<section id="certifikaty" class="scroll-mt-24 bg-gray-50 py-20">
     <!-- TODO Přes administraci vykreslovat jednotlivé certifikáty -->
-    <div class="container">
-        <h3 class="font-weight-bold title">Certifikáty</h3>
-        <div class="row justify-content-around">
-            <!-- style="cursor: zoom-in" byl zvolen pro lepší pochopení se s návštěvníkem -->
-            <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{{ asset('images/certificates/bramac1.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{{ asset('images/certificates/bramac1_m.jpg') }}" width="174" height="239" class="certificate-img"
-                         alt="Certifikát" loading="lazy"><hr class="certificate-hr">
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{{ asset('images/certificates/bramac2.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{{ asset('images/certificates/bramac2_m.jpg') }}" width="174" height="239" class="certificate-img"
-                         alt="Certifikát" loading="lazy"><hr class="certificate-hr">
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{{ asset('images/certificates/isover.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{{ asset('images/certificates/isover_m.jpg') }}" width="174" height="239" class="certificate-img"
-                         alt="Certifikát" loading="lazy"><hr class="certificate-hr">
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{{ asset('images/certificates/rigips.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{{ asset('images/certificates/rigips_m.jpg') }}" width="174" height="239" class="certificate-img"
-                         alt="Certifikát" loading="lazy"><hr class="certificate-hr">
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{{ asset('images/certificates/velux1.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{{ asset('images/certificates/velux1_m.jpg') }}" width="174" height="239" class="certificate-img"
-                         alt="Certifikát" loading="lazy"><hr class="certificate-hr">
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{{ asset('images/certificates/velux2.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{{ asset('images/certificates/velux2_m.jpg') }}" width="174" height="239" class="certificate-img"
-                         alt="Certifikát" loading="lazy"><hr class="certificate-hr">
-                </a>
-            </div>
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl font-semibold sm:text-4xl">Certifikáty</h2>
+        <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-brand"></div>
+
+        @php
+            $certificates = ['bramac1', 'bramac2', 'isover', 'rigips', 'velux1', 'velux2'];
+            $certificateUrls = collect($certificates)->map(fn ($c) => asset("images/certificates/{$c}.jpg"))->all();
+        @endphp
+
+        <div class="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+            @foreach ($certificates as $index => $certificate)
+                <button type="button"
+                        @click="$store.lightbox.show({{ Js::from($certificateUrls) }}, {{ $index }}, 'Certifikát')"
+                        class="group overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                        aria-label="Zobrazit certifikát {{ $index + 1 }}">
+                    <img src="{{ asset("images/certificates/{$certificate}_m.jpg") }}" width="174" height="239"
+                         class="mx-auto h-auto w-full transition duration-300 group-hover:scale-105"
+                         alt="Certifikát" loading="lazy">
+                </button>
+            @endforeach
         </div>
     </div>
 </section>
 
-<section id="reference" class="reference-area">
-    <div class="container">
-        <h3 class="font-weight-bold title">Reference</h3>
-        <div class="col-md-4">
-            <i class="fa-solid fa-filter color-primary me-2"></i>
-            <select class="custom-select col-6 col-md-10 col-lg-6" id="selectType">
-                <option selected value="vse">Vše</option>
-                <option value="strechy">Střechy</option>
-                <option value="garaze">Garáže</option>
-                <option value="podlahy">Podlahy</option>
-                <option value="pergoly">Pergoly</option>
-                <option value="stity">Štíty</option>
-                <option value="ostatni">Ostatní</option>
-            </select>
+@php
+    $references = [
+        ['category' => 'garaze',  'title' => 'Garáž',           'place' => 'Praha-Pankrác',  'dir' => 'garaze',  'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg']],
+        ['category' => 'strechy', 'title' => 'Plzeň',           'place' => 'krov pivovaru',  'dir' => 'strechy', 'thumb' => '09_m.jpg', 'images' => ['09.jpg', '10.jpg', '11.jpg', '12.jpg']],
+        ['category' => 'pergoly', 'title' => 'Pergola',         'place' => 'Hřivnov',        'dir' => 'pergoly', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg']],
+        ['category' => 'pergoly', 'title' => 'Pergola',         'place' => 'Načeradec',      'dir' => 'pergoly', 'thumb' => '04_m.jpg', 'images' => ['04.jpg', '05.jpg', '06.jpg']],
+        ['category' => 'podlahy', 'title' => 'Podlahy',         'place' => 'Jičín',          'dir' => 'podlahy', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg']],
+        ['category' => 'ostatni', 'title' => 'Obložení',        'place' => 'klimatizace',    'dir' => 'ostatni', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg']],
+        ['category' => 'strechy', 'title' => 'Střecha',         'place' => 'Kolovraty',      'dir' => 'strechy', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg']],
+        ['category' => 'stity',   'title' => 'Štít',            'place' => 'Středokluky',    'dir' => 'stity',   'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg']],
+        ['category' => 'pergoly', 'title' => 'Domov důchodců',  'place' => 'Praha 4',        'dir' => 'pergoly', 'thumb' => '07_m.jpg', 'images' => ['07.jpeg', '08.jpeg', '09.jpeg', '10.jpeg']],
+    ];
+    $categories = ['vse' => 'Vše', 'strechy' => 'Střechy', 'garaze' => 'Garáže', 'podlahy' => 'Podlahy', 'pergoly' => 'Pergoly', 'stity' => 'Štíty', 'ostatni' => 'Ostatní'];
+@endphp
+
+<section id="reference" class="scroll-mt-24 py-20"
+         x-data="referenceFilter"
+         @filter-reference.window="select($event.detail)">
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl font-semibold sm:text-4xl">Reference</h2>
+        <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-brand"></div>
+
+        <!-- Filtr kategorií -->
+        <div class="mt-10 flex flex-wrap justify-center gap-2" role="group" aria-label="Filtr referencí">
+            @foreach ($categories as $value => $label)
+                <button type="button"
+                        @click="select('{{ $value }}')"
+                        :class="selected === '{{ $value }}'
+                            ? 'bg-brand text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                        class="rounded-full px-5 py-2 text-sm font-semibold transition">
+                    {{ $label }}
+                </button>
+            @endforeach
         </div>
-        <div class="row justify-content-around">
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass garaze">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/garaze/01.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Garáž<br>Praha-Pankrác</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
+
+        <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach ($references as $reference)
+                @php
+                    $urls = collect($reference['images'])
+                        ->map(fn ($image) => asset("images/reference/{$reference['dir']}/{$image}"))
+                        ->all();
+                @endphp
+                <div x-show="matches('{{ $reference['category'] }}')" x-transition.opacity>
+                    <button type="button"
+                            @click="$store.lightbox.show({{ Js::from($urls) }}, 0, '{{ $reference['title'] }} {{ $reference['place'] }}')"
+                            class="reference-card group relative block w-full overflow-hidden rounded-xl shadow-md transition hover:shadow-xl"
+                            aria-label="Zobrazit galerii: {{ $reference['title'] }} {{ $reference['place'] }}">
+                        <img src="{{ asset("images/reference/{$reference['dir']}/{$reference['thumb']}") }}"
+                             width="361" height="271"
+                             class="aspect-4/3 w-full object-cover transition duration-500 group-hover:scale-110"
+                             alt="{{ $reference['title'] }} {{ $reference['place'] }}" loading="lazy">
+
+                        <div class="reference-overlay absolute inset-0 flex flex-col items-center justify-center bg-brand/85 opacity-0 transition-opacity duration-300">
+                            <span class="text-2xl font-bold text-white">{{ $reference['title'] }}<br>{{ $reference['place'] }}</span>
+                            <i class="fa-solid fa-magnifying-glass-plus mt-5 text-3xl text-white" aria-hidden="true"></i>
+                            <span class="mt-3 text-sm font-medium text-white/90">Zobrazit ({{ count($urls) }})</span>
                         </div>
-                        <img src="{{ asset('images/reference/garaze/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/garaze/02.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
-                    <a href="{{ asset('images/reference/garaze/03.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
-                    <a href="{{ asset('images/reference/garaze/04.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
+                    </button>
                 </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass strechy">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/strechy/09.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Plzeň<br>krov pipovaru</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/strechy/09_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/strechy/10.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
-                    <a href="{{ asset('images/reference/strechy/11.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
-                    <a href="{{ asset('images/reference/strechy/12.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
-                </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass pergoly">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/pergoly/01.jpg') }}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Pergola<br>Hřivnov</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/pergoly/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/pergoly/02.jpg') }}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov"></a>
-                    <a href="{{ asset('images/reference/pergoly/03.jpg') }}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov"></a>
-                </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass pergoly">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/pergoly/04.jpg') }}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Pergola<br>Načeradec</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/pergoly/04_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/pergoly/05.jpg') }}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec"></a>
-                    <a href="{{ asset('images/reference/pergoly/06.jpg') }}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec"></a>
-                </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass podlahy">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/podlahy/01.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Podlahy<br>Jičín</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/podlahy/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/podlahy/02.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
-                    <a href="{{ asset('images/reference/podlahy/03.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
-                    <a href="{{ asset('images/reference/podlahy/04.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
-                </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass ostatni">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/ostatni/01.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Obložení<br>klimatizace</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/ostatni/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/ostatni/02.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
-                    <a href="{{ asset('images/reference/ostatni/03.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
-                    <a href="{{ asset('images/reference/ostatni/04.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
-                </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass strechy">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/strechy/01.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Střecha<br>Kolovraty</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/strechy/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/strechy/02.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{{ asset('images/reference/strechy/03.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{{ asset('images/reference/strechy/04.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{{ asset('images/reference/strechy/05.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{{ asset('images/reference/strechy/06.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{{ asset('images/reference/strechy/07.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{{ asset('images/reference/strechy/08.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass stity">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/stity/01.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Štít<br>Středokluky</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/stity/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/stity/02.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{{ asset('images/reference/stity/03.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{{ asset('images/reference/stity/04.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{{ asset('images/reference/stity/05.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{{ asset('images/reference/stity/06.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                </div>
-            </div>
-            <div class="my-5 col-12 col-md-6 col-lg-4 filterClass pergoly">
-                <div class="reference-overlay">
-                    <a href="{{ asset('images/reference/pergoly/07.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4">
-                        <div class="reference-desc hide w-100 h-100">
-                            <ul class="lst-none p-0 m-auto">
-                                <li class="fw-bold reference-desc-title">Domov důchodců<br>Praha 4</li>
-                                <li class="mt-5"><i class="fa-solid fa-magnifying-glass-plus fs-2"></i></li>
-                                <li class="reference-desc-menu">Zobrazit</li>
-                            </ul>
-                        </div>
-                        <img src="{{ asset('images/reference/pergoly/07_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
-                    </a>
-                    <a href="{{ asset('images/reference/pergoly/08.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
-                    <a href="{{ asset('images/reference/pergoly/09.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
-                    <a href="{{ asset('images/reference/pergoly/10.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
-                </div>
-            </div>
+            @endforeach
+        </div>
+
+    </div>
+</section>
+
+<section id="dodavatele" class="scroll-mt-24 bg-gray-50 py-20">
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl font-semibold sm:text-4xl">Partneři a dodavatelé</h2>
+        <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-brand"></div>
+
+        <div class="mt-12 grid grid-cols-2 items-center justify-items-center gap-8 sm:grid-cols-3 lg:grid-cols-6">
+            @foreach ([['bramac', 'Bramac'], ['velux', 'Velux'], ['isover', 'Isover'], ['rigips', 'Rigips'], ['dek', 'DEK Trade'], ['jafholz', 'JAF Holz']] as [$file, $name])
+                <img src="{{ asset("images/partners/{$file}.png") }}" width="156" height="98" alt="{{ $name }}" loading="lazy"
+                     class="h-auto w-full max-w-[10rem] opacity-40 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0">
+            @endforeach
         </div>
     </div>
 </section>
 
-<section id="dodavatele" class="dodavatele-area">
-    <div class="container">
-        <h3 class="font-weight-bold title">Partneři a dodavatelé</h3>
-        <div class="row dodavatele justify-content-around">
-            <div class="col-6 col-md-4 col-lg-2">
-                <img src="{{ asset('images/partners/bramac.png') }}" width="156" height="98" alt="Bramac" loading="lazy">
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <img src="{{ asset('images/partners/velux.png') }}" width="156" height="98" alt="Velux" loading="lazy">
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <img src="{{ asset('images/partners/isover.png') }}" width="156" height="98" alt="Isover" loading="lazy">
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <img src="{{ asset('images/partners/rigips.png') }}" width="156" height="98" alt="Rigips" loading="lazy">
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <img src="{{ asset('images/partners/dek.png') }}" width="156" height="98" alt="DEK Trade" loading="lazy">
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <img src="{{ asset('images/partners/jafholz.png') }}" width="156" height="98" alt="JAF Holz" loading="lazy">
-            </div>
-        </div>
-    </div>
-</section>
+<section id="kontakt" class="scroll-mt-24 py-20">
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl font-semibold sm:text-4xl">Kontakty</h2>
+        <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-brand"></div>
 
-<section id="kontakt" class="contact-area">
-    <div class="container">
-        <h3 class="font-weight-bold title">Kontakty</h3>
-        <div class="row">
-            <div class="col-6">
-                <ul class="lst-none p-0">
-                    <li><strong>JIRFA, s.r.o.</strong></li>
-                    <li>V Rovinách 55</li>
-                    <li>140 00</li>
-                    <li>Praha 4</li>
-                    <li class="pt-2">
-                        <p class="text-decoration-none"><i class="fa-solid fa-briefcase me-2"></i> IČO: 27143287</p>
-                    </li>
-                    <li><a href="https://jirfa.cz" class="text-decoration-none color-secondary link">
-                            <i class="fa-solid fa-globe color-secondary me-2"></i>jirfa.cz
+        <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <!-- Údaje a mapa -->
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold">JIRFA, s.r.o.</h3>
+                        <address class="mt-3 space-y-1 text-gray-700 not-italic">
+                            <p>V Rovinách 55</p>
+                            <p>140 00 Praha 4</p>
+                        </address>
+                        <p class="mt-3 flex items-center gap-2 text-gray-700">
+                            <i class="fa-solid fa-briefcase text-brand" aria-hidden="true"></i> IČO: 27143287
+                        </p>
+                        <a href="https://jirfa.cz" class="mt-2 flex items-center gap-2 font-medium text-accent transition hover:underline">
+                            <i class="fa-solid fa-globe" aria-hidden="true"></i>jirfa.cz
                         </a>
-                    </li>
-                    <li class="pt-2 d-block d-sm-none">
-                        <span class="text-decoration-none color-secondary link" data-bs-toggle="modal" data-bs-target="#bd-example-modal-lg"><i class="fa-solid fa-location-dot me-2"></i>Mapa</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="modal fade bd-example-modal-lg" id="bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2562.2016275805154!2d14.43143851593333!3d50.04505412437277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b940bab0bd0e1%3A0x3649bd01eb944614!2sV%20Rovin%C3%A1ch%2055%2C%20140%2000%20Praha%204!5e0!3m2!1scs!2scz!4v1644771196755!5m2!1scs!2scz"
-                                allowfullscreen="" loading="lazy" title="Sídlo firmy"></iframe>
+                    </div>
+
+                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold">Jednatel</h3>
+                        <p class="mt-3 text-gray-700">Jiří Šteker</p>
+                        <a href="tel:+420606094834" class="mt-2 flex items-center gap-2 text-lg font-bold text-brand transition hover:underline">
+                            <i class="fa-solid fa-phone-volume" aria-hidden="true"></i>+420 606 094 834
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-6 ps-1">
-                <div class="mb-3">
-                    <p><strong>Jednatel:</strong></p>
-                </div>
-                <div class="mb-3">
-                    <ul class="lst-none p-0">
-                        <li>Jiří Šteker</li>
-                        <li><i class="fa-solid fa-phone-volume color-primary phone-icon me-2"></i>
-                        <a href="tel:+420606094834" class="color-primary link">+420 606 094 834</a></li>
-                    </ul>
+
+                <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2562.2016275805154!2d14.43143851593333!3d50.04505412437277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b940bab0bd0e1%3A0x3649bd01eb944614!2sV%20Rovin%C3%A1ch%2055%2C%20140%2000%20Praha%204!5e0!3m2!1scs!2scz!4v1644771196755!5m2!1scs!2scz"
+                            class="h-72 w-full border-0" allowfullscreen="" loading="lazy" title="Sídlo firmy"></iframe>
                 </div>
             </div>
-        </div>
-        <div class="row pt-5">
-            <div class="col-6 d-none d-md-block"> <!-- U menších zobrazení se mapa nebude zobrazovat, to je vyřešené modal oknem -->
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2562.2016275805154!2d14.43143851593333!3d50.04505412437277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b940bab0bd0e1%3A0x3649bd01eb944614!2sV%20Rovin%C3%A1ch%2055%2C%20140%2000%20Praha%204!5e0!3m2!1scs!2scz!4v1644771196755!5m2!1scs!2scz"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" title="Sídlo firmy"></iframe>
-            </div>
-            <div class="col-12 col-md-6">
-                <h4>Ozvěte se nám!</h4>
-                @foreach ($errors->all() as $error)
-                    <p style="color: red;margin-bottom: 5px">{{ $error }}</p>
-                @endforeach
-                <form action="{{ route('email') }}" method="post" id="contactForm">
+
+            <!-- Poptávkový formulář -->
+            <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+                <h3 class="text-2xl font-semibold">Ozvěte se nám!</h3>
+                <p class="mt-2 text-gray-600">Cenovou nabídku zpracujeme zdarma a nezávazně.</p>
+
+                @if ($errors->any())
+                    <div class="mt-4 rounded-lg border border-red-200 bg-red-50 p-4" role="alert">
+                        <ul class="space-y-1 text-sm text-red-700">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('email') }}" method="post" id="contactForm" class="mt-6 space-y-4">
                     @csrf
                     <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
-                    <div class="form-row">
-                        <div class="form-group col-md-10">
-                            <label for="name">Vaše jméno a příjmení <i class="fa-solid fa-star-of-life color-primary"></i></label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Jan Novák" required>
+
+                    <div>
+                        <label for="name" class="mb-1.5 block text-sm font-medium text-gray-700">
+                            Vaše jméno a příjmení <span class="text-brand" aria-hidden="true">*</span>
+                        </label>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Jan Novák" required
+                               class="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-hidden">
+                    </div>
+
+                    <div>
+                        <label for="inputEmail" class="mb-1.5 block text-sm font-medium text-gray-700">
+                            Váš e-mail <span class="text-brand" aria-hidden="true">*</span>
+                        </label>
+                        <input type="email" id="inputEmail" name="email" value="{{ old('email') }}" placeholder="jan@novak.cz" required
+                               class="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-hidden">
+                    </div>
+
+                    <div>
+                        <label for="tel" class="mb-1.5 block text-sm font-medium text-gray-700">
+                            Váš telefon <span class="text-brand" aria-hidden="true">*</span>
+                        </label>
+                        <input type="tel" id="tel" name="tel" value="{{ old('tel') }}" placeholder="+420 123 456 789" required
+                               class="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-hidden">
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <label for="inputCity" class="mb-1.5 block text-sm font-medium text-gray-700">Město</label>
+                            <input type="text" id="inputCity" name="city" value="{{ old('city') }}"
+                                   class="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-hidden">
+                        </div>
+                        <div>
+                            <label for="inputZip" class="mb-1.5 block text-sm font-medium text-gray-700">PSČ</label>
+                            <input type="text" id="inputZip" name="zip" value="{{ old('zip') }}"
+                                   class="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-hidden">
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-10">
-                            <label for="inputEmail">Váš e-mail <i class="fa-solid fa-star-of-life color-primary"></i></label>
-                            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="jan@novak.cz" required>
-                        </div>
+
+                    <div>
+                        <label for="text" class="mb-1.5 block text-sm font-medium text-gray-700">
+                            Text zprávy <span class="text-brand" aria-hidden="true">*</span>
+                        </label>
+                        <textarea rows="5" id="text" name="message" placeholder="Dobrý den!" required
+                                  class="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-hidden">{{ old('message') }}</textarea>
                     </div>
-                    <div class="form-group col-md-10">
-                        <label for="tel">Váš telefon <i class="fa-solid fa-star-of-life color-primary"></i></label>
-                        <input type="tel" class="form-control" id="tel" name="tel" placeholder="+420 123 456 789" required>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-5">
-                            <label for="inputCity">Město</label>
-                            <input type="text" class="form-control" name="city" id="inputCity">
-                        </div>
-                        <div class="form-group col-md-5">
-                            <label for="inputZip">PSČ</label>
-                            <input type="text" class="form-control" name="zip" id="inputZip">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-10">
-                            <label for="text">Text zprávy <i class="fa-solid fa-star-of-life color-primary"></i></label>
-                            <textarea rows="5" class="form-control" id="text" name="message" placeholder="Dobrý den!" required></textarea>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary bg-primary border-0 mt-3 g-recaptcha" role="button">Odeslat e-mail</button>
-                    <p class="col-7 fw-bold" id="mailSuccess"></p>
+
+                    <p class="text-xs text-gray-500"><span class="text-brand" aria-hidden="true">*</span> Povinné pole</p>
+
+                    <button type="submit"
+                            class="g-recaptcha w-full rounded-lg bg-brand px-6 py-3 font-semibold text-white shadow-md transition hover:bg-brand-dark hover:shadow-lg sm:w-auto">
+                        Odeslat e-mail
+                    </button>
+                    <p class="font-bold" id="mailSuccess"></p>
                 </form>
             </div>
         </div>
     </div>
 </section>
+</main>
+
+<!-- Sdílený lightbox (nahrazuje lightbox2 + jQuery) -->
+<div x-data
+     x-show="$store.lightbox.open"
+     x-cloak
+     x-transition.opacity
+     @keydown.escape.window="$store.lightbox.close()"
+     @keydown.arrow-right.window="$store.lightbox.hasMultiple && $store.lightbox.next()"
+     @keydown.arrow-left.window="$store.lightbox.hasMultiple && $store.lightbox.prev()"
+     @click.self="$store.lightbox.close()"
+     class="fixed inset-0 z-100 flex items-center justify-center bg-black/90 p-4"
+     role="dialog" aria-modal="true" :aria-label="$store.lightbox.title">
+
+    <button type="button" @click="$store.lightbox.close()" aria-label="Zavřít"
+            class="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/25">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+
+    <button type="button" x-show="$store.lightbox.hasMultiple" @click="$store.lightbox.prev()" aria-label="Předchozí"
+            class="absolute left-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/25">
+        <i class="fa-solid fa-angle-left" aria-hidden="true"></i>
+    </button>
+
+    <button type="button" x-show="$store.lightbox.hasMultiple" @click="$store.lightbox.next()" aria-label="Další"
+            class="absolute right-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/25">
+        <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
+    </button>
+
+    <figure class="flex max-h-full flex-col items-center gap-4" @click.stop>
+        <img :src="$store.lightbox.current" :alt="$store.lightbox.title"
+             class="max-h-[80vh] w-auto max-w-full rounded-lg object-contain shadow-2xl">
+        <figcaption class="text-center text-white">
+            <span class="font-medium" x-text="$store.lightbox.title"></span>
+            <span class="ml-2 text-sm text-white/70" x-show="$store.lightbox.hasMultiple">
+                <span x-text="$store.lightbox.index + 1"></span>/<span x-text="$store.lightbox.images.length"></span>
+            </span>
+        </figcaption>
+    </figure>
+</div>
 
 <!-- Footer -->
-<footer id="footer">
-    <hr>
-    <div class="text-center">
-        <div class="container">
-            <div class="row d-flex">
-                <div class="copyright">
-                    <p class="text"><img src="{{ asset('images/logo.webp') }}" width="80" height="16" alt="Logo" loading="lazy">
-                        <strong>&copy;</strong> {{ date('Y') }} Martin Dub, JIRFA s.r.o.
-                    </p>
-                </div>
-            </div>
+<footer id="footer" class="border-t border-gray-200 bg-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col items-center gap-3 text-center">
+            <img src="{{ asset('images/logo.webp') }}" width="80" height="16" alt="JIRFA s.r.o." loading="lazy" class="w-20">
+            <p class="text-sm text-gray-500">
+                <strong>&copy;</strong> {{ date('Y') }} Martin Dub, JIRFA s.r.o.
+            </p>
         </div>
     </div>
 </footer>
-<a id="backToTop" class="back-to-top" href="#" title="Back to top" role="button"><i class="fa-solid fa-angle-up"></i></a>
 
-<script type="module"
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-        crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"
-        integrity="sha512-6gudNVbNM/cVsLUMOb8g2b/RBqtQJ3aDfRFgU+5paeaCTtbYY/Dg00MzZq7r6RvJGI2KKtPBhjkHGTL/iOe21A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ asset('js/main.js') }}" defer></script>
+<!-- Zpět nahoru -->
+<button x-data="backToTop"
+        x-show="visible"
+        x-cloak
+        x-transition.opacity
+        @click="toTop()"
+        type="button"
+        title="Zpět nahoru"
+        aria-label="Zpět nahoru"
+        class="fixed right-5 bottom-24 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-2xl text-white shadow-lg transition hover:bg-brand-dark">
+    <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
+</button>
 </body>
 </html>

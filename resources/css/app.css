@@ -1,3 +1,83 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Firemní barvy a písmo. Díky @theme jsou dostupné jako běžné utility
+  (bg-brand, text-brand, font-sans, ...) a nemusí se opakovat v CSS.
+*/
+@theme {
+    --color-brand: #dc3545;
+    --color-brand-dark: #b02a37;
+    --color-brand-light: #fdecee;
+    --color-accent: #0066ff;
+
+    --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+  Výchozí barva rámečku se v Tailwindu v4 změnila na `currentcolor`.
+  Tímto zůstává vzhled stejný jako dřív, bez nutnosti dopisovat barvu
+  ke každému prvku s rámečkem.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentcolor);
+    }
+
+    html {
+        scroll-behavior: smooth;
+        /* Aby odkazy na kotvy nekončily schované pod fixní navigací */
+        scroll-padding-top: 6rem;
+    }
+
+    body {
+        color: #121212;
+    }
+
+    hr {
+        border-color: currentColor;
+    }
+
+    /* Viditelné zvýraznění při ovládání klávesnicí */
+    :focus-visible {
+        outline: 2px solid var(--color-brand);
+        outline-offset: 2px;
+    }
+}
+
+@layer components {
+    /* -------------- HLAVIČKA -------------- */
+    .hero {
+        background-image:
+            linear-gradient(to bottom, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0.35)),
+            url("/images/hero.webp");
+        background-position: center;
+        background-size: cover;
+    }
+
+    /* -------------- REFERENCE -------------- */
+    /* Překryv se zobrazuje na hover i při ovládání klávesnicí */
+    .reference-card:hover .reference-overlay,
+    .reference-card:focus-within .reference-overlay {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
