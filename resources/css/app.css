@@ -21,6 +21,11 @@
   Tímto zůstává vzhled stejný jako dřív, bez nutnosti dopisovat barvu
   ke každému prvku s rámečkem.
 */
+/* Skryje prvky s x-cloak, dokud se Alpine nenačte (zabrání probliknutí). */
+[x-cloak] {
+    display: none !important;
+}
+
 @layer base {
     *,
     ::after,
@@ -28,6 +33,14 @@
     ::backdrop,
     ::file-selector-button {
         border-color: var(--color-gray-200, currentcolor);
+    }
+
+    /* Klikatelné prvky mají mít ruku i tam, kde ji prohlížeč sám nedává */
+    button:not(:disabled),
+    [role="button"]:not(:disabled),
+    summary,
+    label[for] {
+        cursor: pointer;
     }
 
     html {
@@ -74,10 +87,10 @@
         scroll-behavior: auto;
     }
 
-    *,
-    ::before,
-    ::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-    }
+    /*
+      Záměrně zde NENÍ plošné `transition-duration: 0 !important`.
+      Alpine si u x-transition čte vypočtenou délku přechodu, aby vědělo,
+      kdy prvek skrýt -- přepsání přes !important způsobí, že se prvky
+      nikdy neskryjí (filtr referencí i lightbox zůstanou viditelné).
+    */
 }

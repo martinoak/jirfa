@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewDemandRequest;
 use App\Mail\ContactForm;
 use App\Mail\ContactFormConfirm;
+use App\Models\Certificate;
 use App\Models\Customer;
+use App\Models\Reference;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -15,29 +17,56 @@ class HomepageController extends Controller
 {
     public function index(): View
     {
-        return view('homepage');
+        return view('homepage', [
+            'certificates' => Certificate::orderBy('sort_order')->orderBy('id')->get(),
+            'references' => Reference::with('images')->orderBy('sort_order')->orderBy('id')->get(),
+        ]);
     }
 
     public function email(NewDemandRequest $request): RedirectResponse
     {
-        $secretKey = env('GOOGLE_RECAPTCHA_SECRET_KEY');
-        $responseKey = $request->get('recaptcha_response');
-        $ip = $_SERVER['REMOTE_ADDR'];
+        if (! $this->recaptchaPassed($request->input('recaptcha_response'))) {
+            Log::info('Recaptcha failed', ['data' => $request->except('recaptcha_response')]);
 
-        $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$responseKey&remoteip=$ip";
-        $response = file_get_contents($url);
-        $responseKeys = json_decode($response, true);
-
-        if (intval($responseKeys["success"]) !== 1) {
-            Log::info('Recaptcha failed', ['data' => $request->all()]);
-            abort(403, 'Recaptcha failed');
+            return back()
+                ->withInput()
+                ->with('error', 'Nepodařilo se ověřit, že nejste robot. Zkuste to prosím znovu.');
         }
 
-        Customer::create($request->except('_token'));
+        $data = $request->validated();
 
-        Mail::to(config('mail.from.address'))->send(new ContactForm($request->all()));
-        Mail::to($request->input('email'))->send(new ContactFormConfirm($request->input('message')));
+        Customer::create($data);
 
-        return to_route('homepage');
+        Mail::to(config('mail.from.address'))->send(new ContactForm($data));
+        Mail::to($data['email'])->send(new ContactFormConfirm($data['message']));
+
+        return to_route('homepage')
+            ->with('success', 'Děkujeme, zpráva byla odeslána. Brzy se Vám ozveme.');
+    }
+
+    /**
+     * Ověření reCAPTCHA v3. Když ověřovací službu nelze zavolat, formulář
+     * se neodešle -- ale návštěvník dostane srozumitelnou hlášku místo
+     * chybové stránky.
+     */
+    protected function recaptchaPassed(?string $token): bool
+    {
+        if (! $token) {
+            return false;
+        }
+
+        $response = @file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.http_build_query([
+            'secret' => config('services.recaptcha.secret'),
+            'response' => $token,
+            'remoteip' => request()->ip(),
+        ]));
+
+        if ($response === false) {
+            Log::warning('Recaptcha: ověřovací službu se nepodařilo zavolat.');
+
+            return false;
+        }
+
+        return (bool) (json_decode($response, true)['success'] ?? false);
     }
 }

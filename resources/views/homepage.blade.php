@@ -13,12 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.key') }}"></script>
     <script>
         grecaptcha.ready(function() {
             document.getElementById('contactForm').addEventListener("submit", function(event) {
                 event.preventDefault();
-                grecaptcha.execute('{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}', { action: 'contact' }).then(function(token) {
+                grecaptcha.execute('{{ config('services.recaptcha.key') }}', { action: 'contact' }).then(function(token) {
                     document.getElementById("recaptchaResponse").value= token;
                     document.getElementById('contactForm').submit();
                 });
@@ -29,7 +29,7 @@
     <title>JIRFA s.r.o | Vaše střecha je náš problém!</title>
 </head>
 <body class="font-sans text-gray-900 antialiased">
-<a href="#sluzby" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg">
+<a href="#sluzby" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg">
     Přeskočit na obsah
 </a>
 
@@ -75,7 +75,6 @@
                         <ul id="referenceMenu"
                             x-show="dropdownOpen"
                             x-cloak
-                            x-transition.opacity.duration.150ms
                             class="absolute left-0 z-50 mt-3 w-48 overflow-hidden rounded-lg bg-white py-2 shadow-xl ring-1 ring-gray-200">
                             @foreach (['strechy' => 'Střechy', 'podlahy' => 'Podlahy', 'garaze' => 'Garáže', 'pergoly' => 'Pergoly', 'stity' => 'Štíty'] as $value => $label)
                                 <li>
@@ -97,7 +96,7 @@
             </div>
 
             <!-- Navigace pro malá zobrazení -->
-            <ul id="mainMenu" x-show="mobileOpen" x-cloak x-transition.opacity
+            <ul id="mainMenu" x-show="mobileOpen" x-cloak
                 class="border-t border-gray-200 py-3 lg:hidden">
                 <li><a href="#sluzby" @click="closeAll()" class="block rounded-md px-2 py-2 font-semibold text-gray-700 hover:bg-gray-100">Služby</a></li>
                 <li><a href="#certifikaty" @click="closeAll()" class="block rounded-md px-2 py-2 font-semibold text-gray-700 hover:bg-gray-100">Certifikáty</a></li>
@@ -186,19 +185,18 @@
         <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-brand"></div>
 
         @php
-            $certificates = ['bramac1', 'bramac2', 'isover', 'rigips', 'velux1', 'velux2'];
-            $certificateUrls = collect($certificates)->map(fn ($c) => asset("images/certificates/{$c}.jpg"))->all();
+            $certificateUrls = $certificates->map(fn ($certificate) => $certificate->url())->all();
         @endphp
 
-        <div class="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+        <div x-data class="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
             @foreach ($certificates as $index => $certificate)
                 <button type="button"
-                        @click="$store.lightbox.show({{ Js::from($certificateUrls) }}, {{ $index }}, 'Certifikát')"
-                        class="group overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                        @click="$store.lightbox.show({{ Js::from($certificateUrls) }}, {{ $index }}, '{{ $certificate->title }}')"
+                        class="group cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                         aria-label="Zobrazit certifikát {{ $index + 1 }}">
-                    <img src="{{ asset("images/certificates/{$certificate}_m.jpg") }}" width="174" height="239"
+                    <img src="{{ $certificate->url() }}" width="174" height="239"
                          class="mx-auto h-auto w-full transition duration-300 group-hover:scale-105"
-                         alt="Certifikát" loading="lazy">
+                         alt="{{ $certificate->title }}" loading="lazy">
                 </button>
             @endforeach
         </div>
@@ -206,18 +204,10 @@
 </section>
 
 @php
-    $references = [
-        ['category' => 'garaze',  'title' => 'Garáž',           'place' => 'Praha-Pankrác',  'dir' => 'garaze',  'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg']],
-        ['category' => 'strechy', 'title' => 'Plzeň',           'place' => 'krov pivovaru',  'dir' => 'strechy', 'thumb' => '09_m.jpg', 'images' => ['09.jpg', '10.jpg', '11.jpg', '12.jpg']],
-        ['category' => 'pergoly', 'title' => 'Pergola',         'place' => 'Hřivnov',        'dir' => 'pergoly', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg']],
-        ['category' => 'pergoly', 'title' => 'Pergola',         'place' => 'Načeradec',      'dir' => 'pergoly', 'thumb' => '04_m.jpg', 'images' => ['04.jpg', '05.jpg', '06.jpg']],
-        ['category' => 'podlahy', 'title' => 'Podlahy',         'place' => 'Jičín',          'dir' => 'podlahy', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg']],
-        ['category' => 'ostatni', 'title' => 'Obložení',        'place' => 'klimatizace',    'dir' => 'ostatni', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg']],
-        ['category' => 'strechy', 'title' => 'Střecha',         'place' => 'Kolovraty',      'dir' => 'strechy', 'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg']],
-        ['category' => 'stity',   'title' => 'Štít',            'place' => 'Středokluky',    'dir' => 'stity',   'thumb' => '01_m.jpg', 'images' => ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg']],
-        ['category' => 'pergoly', 'title' => 'Domov důchodců',  'place' => 'Praha 4',        'dir' => 'pergoly', 'thumb' => '07_m.jpg', 'images' => ['07.jpeg', '08.jpeg', '09.jpeg', '10.jpeg']],
-    ];
-    $categories = ['vse' => 'Vše', 'strechy' => 'Střechy', 'garaze' => 'Garáže', 'podlahy' => 'Podlahy', 'pergoly' => 'Pergoly', 'stity' => 'Štíty', 'ostatni' => 'Ostatní'];
+    // Ve filtru se zobrazí jen kategorie, ve kterých nějaká reference je.
+    $usedCategories = $references->pluck('category')->unique();
+    $categories = collect(['vse' => 'Vše'])
+        ->merge(collect(\App\Models\Reference::CATEGORIES)->only($usedCategories));
 @endphp
 
 <section id="reference" class="scroll-mt-24 py-20"
@@ -232,10 +222,8 @@
             @foreach ($categories as $value => $label)
                 <button type="button"
                         @click="select('{{ $value }}')"
-                        :class="selected === '{{ $value }}'
-                            ? 'bg-brand text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="rounded-full px-5 py-2 text-sm font-semibold transition">
+                        :aria-pressed="selected === '{{ $value }}' ? 'true' : 'false'"
+                        class="cursor-pointer rounded-full bg-gray-100 px-5 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-200 aria-pressed:bg-brand aria-pressed:text-white aria-pressed:shadow-md">
                     {{ $label }}
                 </button>
             @endforeach
@@ -243,25 +231,21 @@
 
         <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($references as $reference)
-                @php
-                    $urls = collect($reference['images'])
-                        ->map(fn ($image) => asset("images/reference/{$reference['dir']}/{$image}"))
-                        ->all();
-                @endphp
-                <div x-show="matches('{{ $reference['category'] }}')" x-transition.opacity>
+                @continue ($reference->images->isEmpty())
+                <div x-show="matches('{{ $reference->category }}')">
                     <button type="button"
-                            @click="$store.lightbox.show({{ Js::from($urls) }}, 0, '{{ $reference['title'] }} {{ $reference['place'] }}')"
-                            class="reference-card group relative block w-full overflow-hidden rounded-xl shadow-md transition hover:shadow-xl"
-                            aria-label="Zobrazit galerii: {{ $reference['title'] }} {{ $reference['place'] }}">
-                        <img src="{{ asset("images/reference/{$reference['dir']}/{$reference['thumb']}") }}"
+                            @click="$store.lightbox.show({{ Js::from($reference->imageUrls()) }}, 0, '{{ $reference->fullTitle() }}')"
+                            class="reference-card group relative block w-full cursor-pointer overflow-hidden rounded-xl shadow-md transition hover:shadow-xl"
+                            aria-label="Zobrazit galerii: {{ $reference->fullTitle() }}">
+                        <img src="{{ $reference->thumbnailUrl() }}"
                              width="361" height="271"
-                             class="aspect-4/3 w-full object-cover transition duration-500 group-hover:scale-110"
-                             alt="{{ $reference['title'] }} {{ $reference['place'] }}" loading="lazy">
+                             class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-110"
+                             alt="{{ $reference->fullTitle() }}" loading="lazy">
 
-                        <div class="reference-overlay absolute inset-0 flex flex-col items-center justify-center bg-brand/85 opacity-0 transition-opacity duration-300">
-                            <span class="text-2xl font-bold text-white">{{ $reference['title'] }}<br>{{ $reference['place'] }}</span>
+                        <div class="reference-overlay absolute inset-0 flex flex-col items-center justify-center bg-brand/85 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                            <span class="text-2xl font-bold text-white">{{ $reference->title }}<br>{{ $reference->place }}</span>
                             <i class="fa-solid fa-magnifying-glass-plus mt-5 text-3xl text-white" aria-hidden="true"></i>
-                            <span class="mt-3 text-sm font-medium text-white/90">Zobrazit ({{ count($urls) }})</span>
+                            <span class="mt-3 text-sm font-medium text-white/90">Zobrazit ({{ $reference->images->count() }})</span>
                         </div>
                     </button>
                 </div>
@@ -327,6 +311,20 @@
             <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
                 <h3 class="text-2xl font-semibold">Ozvěte se nám!</h3>
                 <p class="mt-2 text-gray-600">Cenovou nabídku zpracujeme zdarma a nezávazně.</p>
+
+                @if (session('success'))
+                    <div class="mt-4 flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 p-4" role="status">
+                        <i class="fa-solid fa-circle-check mt-0.5 text-green-600" aria-hidden="true"></i>
+                        <p class="text-sm text-green-800">{{ session('success') }}</p>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="mt-4 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4" role="alert">
+                        <i class="fa-solid fa-circle-exclamation mt-0.5 text-red-600" aria-hidden="true"></i>
+                        <p class="text-sm text-red-800">{{ session('error') }}</p>
+                    </div>
+                @endif
 
                 @if ($errors->any())
                     <div class="mt-4 rounded-lg border border-red-200 bg-red-50 p-4" role="alert">
@@ -405,12 +403,11 @@
 <div x-data
      x-show="$store.lightbox.open"
      x-cloak
-     x-transition.opacity
      @keydown.escape.window="$store.lightbox.close()"
      @keydown.arrow-right.window="$store.lightbox.hasMultiple && $store.lightbox.next()"
      @keydown.arrow-left.window="$store.lightbox.hasMultiple && $store.lightbox.prev()"
      @click.self="$store.lightbox.close()"
-     class="fixed inset-0 z-100 flex items-center justify-center bg-black/90 p-4"
+     class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
      role="dialog" aria-modal="true" :aria-label="$store.lightbox.title">
 
     <button type="button" @click="$store.lightbox.close()" aria-label="Zavřít"
@@ -456,7 +453,6 @@
 <button x-data="backToTop"
         x-show="visible"
         x-cloak
-        x-transition.opacity
         @click="toTop()"
         type="button"
         title="Zpět nahoru"

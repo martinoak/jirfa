@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    // Homepage od zavedení administrace načítá reference a certifikáty
+    // z databáze, takže test potřebuje připravené schéma.
+    use RefreshDatabase;
+
     /**
      * A basic test example.
      */

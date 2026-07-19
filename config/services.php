@@ -31,4 +31,13 @@ return [
         ],
     ],
 
+    /*
+    | Klíče musí být čtené přes config(), ne env(). Po `php artisan config:cache`
+    | totiž env() v šablonách i controllerech vrací null.
+    */
+    'recaptcha' => [
+        'key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
+        'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+    ],
+
 ];
