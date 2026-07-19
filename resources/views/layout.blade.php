@@ -7,23 +7,23 @@
     <title>Administrace | JIRFA</title>
 
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="{asset('favicon.png')}"/>
-    <link rel="apple-touch-icon" type="image/png" href="{asset('images/apple-touch-icon.png')}"/>
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}"/>
+    <link rel="apple-touch-icon" type="image/png" href="{{ asset('images/apple-touch-icon.png') }}"/>
 
     <!-- ===== All CSS files ===== -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-    <link rel="stylesheet" href="{asset('css/tailwind.css')}?m={filemtime(public_path('css/tailwind.css'))}" />
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}?m={{ filemtime(public_path('css/tailwind.css')) }}" />
 
-    {block head}{/block}
+    @yield('head')
 </head>
 <body>
-    {include 'partials/alerts.latte'}
-    {include content}
+    @include('partials.alerts')
+    @yield('content')
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
-{block bottomscripts}{/block}
+@yield('bottomscripts')
 
 </html>

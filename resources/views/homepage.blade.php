@@ -8,8 +8,8 @@
     <meta name="keywords" content="Stavební firma, střechy, pergoly, garáže, podlahy, Praha, JIRFA s.r.o.">
     <meta name="theme-color" content="#dc3545">
 
-    <link rel="icon" href="{asset('favicon.png')}">
-    <link rel="apple-touch-icon" href="{asset('images/apple-touch-icon.png')}">
+    <link rel="icon" href="{{ asset('favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -20,14 +20,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.css"
           integrity="sha512-Woz+DqWYJ51bpVk5Fv0yES/edIMXjj3Ynda+KWTIkGoynAMHrqTcDUQltbipuiaD5ymEo9520lyoVOo9jCQOCA=="
           crossorigin="anonymous">
-    <link rel="stylesheet" href="{asset('css/style.css')}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <script src="https://www.google.com/recaptcha/api.js?render={env('GOOGLE_RECAPTCHA_SITE_KEY')}"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"></script>
     <script>
         grecaptcha.ready(function() {
             document.getElementById('contactForm').addEventListener("submit", function(event) {
                 event.preventDefault();
-                grecaptcha.execute({env('GOOGLE_RECAPTCHA_SITE_KEY')}, { action: 'contact' }).then(function(token) {
+                grecaptcha.execute('{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}', { action: 'contact' }).then(function(token) {
                     document.getElementById("recaptchaResponse").value= token;
                     document.getElementById('contactForm').submit();
                 });
@@ -43,7 +43,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light py-3">
         <div class="container d-flex align-items-start">
             <a class="navbar-brand" href="#">
-                <img id="logo" src="{asset('images/logo.png')}" width="108" height="24" alt="Logo">
+                <img id="logo" src="{{ asset('images/logo.png') }}" width="108" height="24" alt="Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -197,38 +197,38 @@
         <div class="row justify-content-around">
             <!-- style="cursor: zoom-in" byl zvolen pro lepší pochopení se s návštěvníkem -->
             <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{asset('images/certificates/bramac1.jpg')}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{asset('images/certificates/bramac1_m.jpg')}" width="174" height="239" class="certificate-img"
+                <a href="{{ asset('images/certificates/bramac1.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
+                    <img src="{{ asset('images/certificates/bramac1_m.jpg') }}" width="174" height="239" class="certificate-img"
                          alt="Certifikát" loading="lazy"><hr class="certificate-hr">
                 </a>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{asset('images/certificates/bramac2.jpg')}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{asset('images/certificates/bramac2_m.jpg')}" width="174" height="239" class="certificate-img"
+                <a href="{{ asset('images/certificates/bramac2.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
+                    <img src="{{ asset('images/certificates/bramac2_m.jpg') }}" width="174" height="239" class="certificate-img"
                          alt="Certifikát" loading="lazy"><hr class="certificate-hr">
                 </a>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{asset('images/certificates/isover.jpg')}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{asset('images/certificates/isover_m.jpg')}" width="174" height="239" class="certificate-img"
+                <a href="{{ asset('images/certificates/isover.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
+                    <img src="{{ asset('images/certificates/isover_m.jpg') }}" width="174" height="239" class="certificate-img"
                          alt="Certifikát" loading="lazy"><hr class="certificate-hr">
                 </a>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{asset('images/certificates/rigips.jpg')}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{asset('images/certificates/rigips_m.jpg')}" width="174" height="239" class="certificate-img"
+                <a href="{{ asset('images/certificates/rigips.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
+                    <img src="{{ asset('images/certificates/rigips_m.jpg') }}" width="174" height="239" class="certificate-img"
                          alt="Certifikát" loading="lazy"><hr class="certificate-hr">
                 </a>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{asset('images/certificates/velux1.jpg')}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{asset('images/certificates/velux1_m.jpg')}" width="174" height="239" class="certificate-img"
+                <a href="{{ asset('images/certificates/velux1.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
+                    <img src="{{ asset('images/certificates/velux1_m.jpg') }}" width="174" height="239" class="certificate-img"
                          alt="Certifikát" loading="lazy"><hr class="certificate-hr">
                 </a>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-2">
-                <a href="{asset('images/certificates/velux2.jpg')}" data-lightbox="certifikat" data-title="Certifikát">
-                    <img src="{asset('images/certificates/velux2_m.jpg')}" width="174" height="239" class="certificate-img"
+                <a href="{{ asset('images/certificates/velux2.jpg') }}" data-lightbox="certifikat" data-title="Certifikát">
+                    <img src="{{ asset('images/certificates/velux2_m.jpg') }}" width="174" height="239" class="certificate-img"
                          alt="Certifikát" loading="lazy"><hr class="certificate-hr">
                 </a>
             </div>
@@ -254,7 +254,7 @@
         <div class="row justify-content-around">
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass garaze">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/garaze/01.jpg')}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác">
+                    <a href="{{ asset('images/reference/garaze/01.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Garáž<br>Praha-Pankrác</li>
@@ -262,16 +262,16 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/garaze/01_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/garaze/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/garaze/02.jpg')}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
-                    <a href="{asset('images/reference/garaze/03.jpg')}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
-                    <a href="{asset('images/reference/garaze/04.jpg')}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
+                    <a href="{{ asset('images/reference/garaze/02.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
+                    <a href="{{ asset('images/reference/garaze/03.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
+                    <a href="{{ asset('images/reference/garaze/04.jpg') }}" data-lightbox="reference-garaz-1" data-title="Garáž Praha-Pankrác" title="Garáž Praha-Pankrác"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass strechy">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/strechy/09.jpg')}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru">
+                    <a href="{{ asset('images/reference/strechy/09.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Plzeň<br>krov pipovaru</li>
@@ -279,16 +279,16 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/strechy/09_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/strechy/09_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/strechy/10.jpg')}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
-                    <a href="{asset('images/reference/strechy/11.jpg')}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
-                    <a href="{asset('images/reference/strechy/12.jpg')}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
+                    <a href="{{ asset('images/reference/strechy/10.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
+                    <a href="{{ asset('images/reference/strechy/11.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
+                    <a href="{{ asset('images/reference/strechy/12.jpg') }}" data-lightbox="reference-strechy-1" data-title="Plzeň krov pipovaru" title="Plzeň krov pipovaru"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass pergoly">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/pergoly/01.jpg')}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov">
+                    <a href="{{ asset('images/reference/pergoly/01.jpg') }}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Pergola<br>Hřivnov</li>
@@ -296,15 +296,15 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/pergoly/01_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/pergoly/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/pergoly/02.jpg')}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov"></a>
-                    <a href="{asset('images/reference/pergoly/03.jpg')}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov"></a>
+                    <a href="{{ asset('images/reference/pergoly/02.jpg') }}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov"></a>
+                    <a href="{{ asset('images/reference/pergoly/03.jpg') }}" data-lightbox="reference-pergoly-1" data-title="Pergola Hřivnov" title="Pergola Hřivnov"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass pergoly">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/pergoly/04.jpg')}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec">
+                    <a href="{{ asset('images/reference/pergoly/04.jpg') }}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Pergola<br>Načeradec</li>
@@ -312,15 +312,15 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/pergoly/04_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/pergoly/04_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/pergoly/05.jpg')}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec"></a>
-                    <a href="{asset('images/reference/pergoly/06.jpg')}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec"></a>
+                    <a href="{{ asset('images/reference/pergoly/05.jpg') }}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec"></a>
+                    <a href="{{ asset('images/reference/pergoly/06.jpg') }}" data-lightbox="reference-pergoly-2" data-title="Pergola Načeradec" title="Pergola Načeradec"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass podlahy">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/podlahy/01.jpg')}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín">
+                    <a href="{{ asset('images/reference/podlahy/01.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Podlahy<br>Jičín</li>
@@ -328,16 +328,16 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/podlahy/01_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/podlahy/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/podlahy/02.jpg')}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
-                    <a href="{asset('images/reference/podlahy/03.jpg')}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
-                    <a href="{asset('images/reference/podlahy/04.jpg')}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
+                    <a href="{{ asset('images/reference/podlahy/02.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
+                    <a href="{{ asset('images/reference/podlahy/03.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
+                    <a href="{{ asset('images/reference/podlahy/04.jpg') }}" data-lightbox="reference-podlahy-1" data-title="Podlahy Jičín" title="Podlahy Jičín"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass ostatni">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/ostatni/01.jpg')}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace">
+                    <a href="{{ asset('images/reference/ostatni/01.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Obložení<br>klimatizace</li>
@@ -345,16 +345,16 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/ostatni/01_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/ostatni/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/ostatni/02.jpg')}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
-                    <a href="{asset('images/reference/ostatni/03.jpg')}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
-                    <a href="{asset('images/reference/ostatni/04.jpg')}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
+                    <a href="{{ asset('images/reference/ostatni/02.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
+                    <a href="{{ asset('images/reference/ostatni/03.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
+                    <a href="{{ asset('images/reference/ostatni/04.jpg') }}" data-lightbox="reference-ostatni-1" data-title="Obložení klimatizace" title="Obložení klimatizace"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass strechy">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/strechy/01.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty">
+                    <a href="{{ asset('images/reference/strechy/01.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Střecha<br>Kolovraty</li>
@@ -362,20 +362,20 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/strechy/01_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/strechy/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/strechy/02.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{asset('images/reference/strechy/03.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{asset('images/reference/strechy/04.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{asset('images/reference/strechy/05.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{asset('images/reference/strechy/06.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{asset('images/reference/strechy/07.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
-                    <a href="{asset('images/reference/strechy/08.jpg')}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
+                    <a href="{{ asset('images/reference/strechy/02.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
+                    <a href="{{ asset('images/reference/strechy/03.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
+                    <a href="{{ asset('images/reference/strechy/04.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
+                    <a href="{{ asset('images/reference/strechy/05.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
+                    <a href="{{ asset('images/reference/strechy/06.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
+                    <a href="{{ asset('images/reference/strechy/07.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
+                    <a href="{{ asset('images/reference/strechy/08.jpg') }}" data-lightbox="reference-strechy-2" data-title="Střecha Kolovraty" title="Střecha Kolovraty"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass stity">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/stity/01.jpg')}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky">
+                    <a href="{{ asset('images/reference/stity/01.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Štít<br>Středokluky</li>
@@ -383,18 +383,18 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/stity/01_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/stity/01_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/stity/02.jpg')}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{asset('images/reference/stity/03.jpg')}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{asset('images/reference/stity/04.jpg')}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{asset('images/reference/stity/05.jpg')}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
-                    <a href="{asset('images/reference/stity/06.jpg')}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
+                    <a href="{{ asset('images/reference/stity/02.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
+                    <a href="{{ asset('images/reference/stity/03.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
+                    <a href="{{ asset('images/reference/stity/04.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
+                    <a href="{{ asset('images/reference/stity/05.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
+                    <a href="{{ asset('images/reference/stity/06.jpg') }}" data-lightbox="reference-stity-1" data-title="Štít Středokluky" title="Štít Středokluky"></a>
                 </div>
             </div>
             <div class="my-5 col-12 col-md-6 col-lg-4 filterClass pergoly">
                 <div class="reference-overlay">
-                    <a href="{asset('images/reference/pergoly/07.jpeg')}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4">
+                    <a href="{{ asset('images/reference/pergoly/07.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4">
                         <div class="reference-desc hide w-100 h-100">
                             <ul class="lst-none p-0 m-auto">
                                 <li class="fw-bold reference-desc-title">Domov důchodců<br>Praha 4</li>
@@ -402,11 +402,11 @@
                                 <li class="reference-desc-menu">Zobrazit</li>
                             </ul>
                         </div>
-                        <img src="{asset('images/reference/pergoly/07_m.jpg')}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
+                        <img src="{{ asset('images/reference/pergoly/07_m.jpg') }}" width="361" height="271" class="w-100 reference-img" alt="" loading="lazy"/>
                     </a>
-                    <a href="{asset('images/reference/pergoly/08.jpeg')}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
-                    <a href="{asset('images/reference/pergoly/09.jpeg')}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
-                    <a href="{asset('images/reference/pergoly/10.jpeg')}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
+                    <a href="{{ asset('images/reference/pergoly/08.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
+                    <a href="{{ asset('images/reference/pergoly/09.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
+                    <a href="{{ asset('images/reference/pergoly/10.jpeg') }}" data-lightbox="reference-pergoly-3" data-title="Domov důchodců Praha 4" title="Domov důchodců Praha 4"></a>
                 </div>
             </div>
         </div>
@@ -418,22 +418,22 @@
         <h3 class="font-weight-bold title">Partneři a dodavatelé</h3>
         <div class="row dodavatele justify-content-around">
             <div class="col-6 col-md-4 col-lg-2">
-                <img src="{asset('images/partners/bramac.png')}" width="156" height="98" alt="Bramac" loading="lazy">
+                <img src="{{ asset('images/partners/bramac.png') }}" width="156" height="98" alt="Bramac" loading="lazy">
             </div>
             <div class="col-6 col-md-4 col-lg-2">
-                <img src="{asset('images/partners/velux.png')}" width="156" height="98" alt="Velux" loading="lazy">
+                <img src="{{ asset('images/partners/velux.png') }}" width="156" height="98" alt="Velux" loading="lazy">
             </div>
             <div class="col-6 col-md-4 col-lg-2">
-                <img src="{asset('images/partners/isover.png')}" width="156" height="98" alt="Isover" loading="lazy">
+                <img src="{{ asset('images/partners/isover.png') }}" width="156" height="98" alt="Isover" loading="lazy">
             </div>
             <div class="col-6 col-md-4 col-lg-2">
-                <img src="{asset('images/partners/rigips.png')}" width="156" height="98" alt="Rigips" loading="lazy">
+                <img src="{{ asset('images/partners/rigips.png') }}" width="156" height="98" alt="Rigips" loading="lazy">
             </div>
             <div class="col-6 col-md-4 col-lg-2">
-                <img src="{asset('images/partners/dek.png')}" width="156" height="98" alt="DEK Trade" loading="lazy">
+                <img src="{{ asset('images/partners/dek.png') }}" width="156" height="98" alt="DEK Trade" loading="lazy">
             </div>
             <div class="col-6 col-md-4 col-lg-2">
-                <img src="{asset('images/partners/jafholz.png')}" width="156" height="98" alt="JAF Holz" loading="lazy">
+                <img src="{{ asset('images/partners/jafholz.png') }}" width="156" height="98" alt="JAF Holz" loading="lazy">
             </div>
         </div>
     </div>
@@ -489,11 +489,11 @@
             </div>
             <div class="col-12 col-md-6">
                 <h4>Ozvěte se nám!</h4>
-                {foreach $errors->all() as $error}
-                    <p style="color: red;margin-bottom: 5px">{$error}</p>
-                {/foreach}
-                <form action="{route('email')}" method="post" id="contactForm">
-                    {csrf_field()|noescape}
+                @foreach ($errors->all() as $error)
+                    <p style="color: red;margin-bottom: 5px">{{ $error }}</p>
+                @endforeach
+                <form action="{{ route('email') }}" method="post" id="contactForm">
+                    @csrf
                     <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                     <div class="form-row">
                         <div class="form-group col-md-10">
@@ -542,8 +542,8 @@
         <div class="container">
             <div class="row d-flex">
                 <div class="copyright">
-                    <p class="text"><img src="{asset('images/logo.webp')}" width="80" height="16" alt="Logo" loading="lazy">
-                        <strong>&copy;</strong> {date('Y')} Martin Dub, JIRFA s.r.o.
+                    <p class="text"><img src="{{ asset('images/logo.webp') }}" width="80" height="16" alt="Logo" loading="lazy">
+                        <strong>&copy;</strong> {{ date('Y') }} Martin Dub, JIRFA s.r.o.
                     </p>
                 </div>
             </div>
@@ -560,6 +560,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"
         integrity="sha512-6gudNVbNM/cVsLUMOb8g2b/RBqtQJ3aDfRFgU+5paeaCTtbYY/Dg00MzZq7r6RvJGI2KKtPBhjkHGTL/iOe21A=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{asset('js/main.js')}" defer></script>
+<script src="{{ asset('js/main.js') }}" defer></script>
 </body>
 </html>

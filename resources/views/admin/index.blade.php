@@ -1,6 +1,6 @@
-{layout '../layout.latte'}
+@extends('layout')
 
-{block content}
+@section('content')
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
@@ -10,31 +10,31 @@
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
                 </button>
-                <a href="{route('admin.dashboard')}" class="flex ms-2 md:me-24">
-                    <img src="{asset('images/logo.png')}" class="me-3" alt="" />
+                <a href="{{ route('admin.dashboard') }}" class="flex ms-2 md:me-24">
+                    <img src="{{ asset('images/logo.png') }}" class="me-3" alt="" />
                 </a>
             </div>
             <div class="flex items-center">
                 <div class="flex items-center ms-3 gap-4">
-                    <p class="flex items-center"><img src="https://cdn.icon-icons.com/icons2/2389/PNG/512/php_logo_icon_144990.png" class="w-auto h-8 me-2"> <span>{phpversion()}</span></p>
-                    <p class="flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/50px-Laravel.svg.png" class="w-4 h-4 me-2"> {\Illuminate\Foundation\Application::VERSION}</p>
+                    <p class="flex items-center"><img src="https://cdn.icon-icons.com/icons2/2389/PNG/512/php_logo_icon_144990.png" class="w-auto h-8 me-2"> <span>{{ phpversion() }}</span></p>
+                    <p class="flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/50px-Laravel.svg.png" class="w-4 h-4 me-2"> {{ \Illuminate\Foundation\Application::VERSION }}</p>
                     <div>
                         <button type="button" class="flex text-sm" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                            <img src="data:image/jpeg;base64,{\Illuminate\Support\Facades\Auth::user()->profile_picture|noescape}" class="w-8 h-8 rounded-full" alt="{\Illuminate\Support\Facades\Auth::user()->name}" />
+                            <img src="data:image/jpeg;base64,{{ \Illuminate\Support\Facades\Auth::user()->profile_picture }}" class="w-8 h-8 rounded-full" alt="{{ \Illuminate\Support\Facades\Auth::user()->name }}" />
                         </button>
                     </div>
                     <div class="z-50 hidden m-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow w-[150px]" id="dropdown-user">
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm text-gray-900" role="none">
-                                {\Illuminate\Support\Facades\Auth::user()->name}
+                                {{ \Illuminate\Support\Facades\Auth::user()->name }}
                             </p>
                             <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                                {\Illuminate\Support\Facades\Auth::user()->email}
+                                {{ \Illuminate\Support\Facades\Auth::user()->email }}
                             </p>
                         </div>
                         <ul class="py-1" role="none">
                             <li>
-                                <a href="{route('logout')}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Odhlásit se</a>
+                                <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Odhlásit se</a>
                             </li>
                         </ul>
                     </div>
@@ -48,7 +48,7 @@
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
         <ul class="space-y-2 font-medium">
             <li>
-                <a href="{route('reference.index')}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                <a href="{{ route('reference.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
                     <i class="fa-solid fa-heart fa-lg text-red-600"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Reference</span>
                 </a>
@@ -117,32 +117,32 @@
             </tr>
             </thead>
             <tbody>
-            {foreach $customers as $customer}
+            @foreach ($customers as $customer)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-bold text-gray-900 whitespace-nowrap">
-                        {$customer->name}
+                        {{ $customer->name }}
                     </th>
                     <td class="px-6 py-4">
-                        {$customer->email}
+                        {{ $customer->email }}
                     </td>
                     <td class="px-6 py-4">
-                        {$customer->tel}
+                        {{ $customer->tel }}
                     </td>
                     <td class="px-6 py-4">
-                        {$customer->city}, {$customer->zip}
+                        {{ $customer->city }}, {{ $customer->zip }}
                     </td>
                     <td class="px-6 py-4">
-                        {$customer->message}
+                        {{ $customer->message }}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Akce</a>
                     </td>
                 </tr>
-            {/foreach}
+            @endforeach
             </tbody>
         </table>
     </div>
 
 </div>
 
-{/block}
+@endsection

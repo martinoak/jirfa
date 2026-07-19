@@ -169,7 +169,7 @@
                                                 <td  style="font-size:20px;height:20px;line-height:20px;">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td align="center" valign="middle"><img src="{asset('images/logo.png')}" alt="logo" style="border:0;display:inline!important;"></td>
+                                                <td align="center" valign="middle"><img src="{{ asset('images/logo.png') }}" alt="logo" style="border:0;display:inline!important;"></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -196,18 +196,18 @@
                                             </tr>
                                             <tr>
                                                 <td align="center" valign="middle" style="color:#212121;font-size:20px;line-height:30px;font-weight:400;letter-spacing:0;padding: 0 0 30px;text-align: center">
-                                                    <strong>Jméno: </strong>{$data['name'] ?? ''}<br>
-                                                    <strong>E-mail: </strong><a href="mailto:{$data['email'] ?? ''}">{$data['email'] ?? ''}</a><br>
-                                                    <strong>Jméno: </strong><a href="tel:{$data['tel'] ?? ''}">{$data['tel'] ?? ''}</a><br>
-                                                    {if isset($data['city']) || isset($data['zip'])}<strong>Adresa: </strong> {$data['city'] ?? ''.', '. $data['zip'] ?? ''}{/if}<br>
-                                                    <strong>Zpráva: </strong>{$data['message'] ?? ''}<br>
+                                                    <strong>Jméno: </strong>{{ $data['name'] ?? '' }}<br>
+                                                    <strong>E-mail: </strong><a href="mailto:{{ $data['email'] ?? '' }}">{{ $data['email'] ?? '' }}</a><br>
+                                                    <strong>Jméno: </strong><a href="tel:{{ $data['tel'] ?? '' }}">{{ $data['tel'] ?? '' }}</a><br>
+                                                    @if (isset($data['city']) || isset($data['zip']))<strong>Adresa: </strong> {{ ($data['city'] ?? '') . ', ' . ($data['zip'] ?? '') }}@endif<br>
+                                                    <strong>Zpráva: </strong>{{ $data['message'] ?? '' }}<br>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td align="center" valign="middle">
                                                     <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                         <tr>
-                                                            <td align="center" style="background-color:#eb2832;display:block;border-radius:45px;"><a href="{route('admin.dashboard')}" style="color:white;font-size:14px;font-weight:600;letter-spacing:0;line-height:24px;display:block;padding:10px 20px;text-decoration:none;white-space:nowrap;">Do administrace</a></td>
+                                                            <td align="center" style="background-color:#eb2832;display:block;border-radius:45px;"><a href="{{ route('admin.dashboard') }}" style="color:white;font-size:14px;font-weight:600;letter-spacing:0;line-height:24px;display:block;padding:10px 20px;text-decoration:none;white-space:nowrap;">Do administrace</a></td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -239,7 +239,7 @@
                                                 <td  style="font-size:40px;height:40px;line-height:40px;">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td align="center" valign="middle" style="color:#939393;font-size:14px;line-height:24px;font-weight:400;letter-spacing:0;padding: 0 0 30px;">Odesláno {date('d. m. Y \v H:i')} z webu <a href="{\Illuminate\Support\Facades\URL::to('/')}">{\Illuminate\Support\Facades\URL::to('/')}</a></td>
+                                                <td align="center" valign="middle" style="color:#939393;font-size:14px;line-height:24px;font-weight:400;letter-spacing:0;padding: 0 0 30px;">Odesláno {{ date('d. m. Y \v H:i') }} z webu <a href="{{ url('/') }}">{{ url('/') }}</a></td>
                                             </tr>
                                             <tr>
                                                 <td  style="font-size:40px;height:40px;line-height:40px;">&nbsp;</td>

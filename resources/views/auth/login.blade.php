@@ -1,14 +1,14 @@
-{layout '../layout.latte'}
+@extends('layout')
 
-{block content}
+@section('content')
     <div class="flex h-screen flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img class="mx-auto w-auto" src="{asset('images/logo.png')}" alt="JIRFA s.r.o.">
+            <img class="mx-auto w-auto" src="{{ asset('images/logo.png') }}" alt="JIRFA s.r.o.">
         </div>
 
         <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form class="space-y-6" action="{route('authenticate')}" method="POST">
-                {csrf_field()|noescape}
+            <form class="space-y-6" action="{{ route('authenticate') }}" method="POST">
+                @csrf
                 <div>
                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
                     <div class="mt-2">
@@ -32,4 +32,4 @@
         </div>
     </div>
 
-{/block}
+@endsection

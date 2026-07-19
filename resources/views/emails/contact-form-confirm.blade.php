@@ -169,7 +169,7 @@
                                                 <td  style="font-size:20px;height:20px;line-height:20px;">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td align="center" valign="middle"><img src="{asset('images/logo.png')}" alt="logo" style="border:0;display:inline!important;margin-bottom: 40px"></td>
+                                                <td align="center" valign="middle"><img src="{{ asset('images/logo.png') }}" alt="logo" style="border:0;display:inline!important;margin-bottom: 40px"></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -199,7 +199,7 @@
                                             </tr>
                                             <tr>
                                                 <td align="center" valign="middle" style="color:#212121;font-size:20px;line-height:30px;font-weight:400;letter-spacing:0;padding: 0 0 30px;text-align: center">
-                                                    <strong>Zpráva: </strong>{$data ?? ''}<br>
+                                                    <strong>Zpráva: </strong>{{ $data ?? '' }}<br>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -229,7 +229,7 @@
                                                 <td  style="font-size:40px;height:40px;line-height:40px;">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td align="center" valign="middle" style="color:#939393;font-size:14px;line-height:24px;font-weight:400;letter-spacing:0;padding: 0 0 30px;">Odesláno {date('d. m. Y \v H:i')} z webu <a href="{\Illuminate\Support\Facades\URL::to('/')}">{\Illuminate\Support\Facades\URL::to('/')}</a></td>
+                                                <td align="center" valign="middle" style="color:#939393;font-size:14px;line-height:24px;font-weight:400;letter-spacing:0;padding: 0 0 30px;">Odesláno {{ date('d. m. Y \v H:i') }} z webu <a href="{{ url('/') }}">{{ url('/') }}</a></td>
                                             </tr>
                                             <tr>
                                                 <td  style="font-size:40px;height:40px;line-height:40px;">&nbsp;</td>
