@@ -27,6 +27,10 @@
 }
 
 @layer base {
+    * {
+        scroll-behavior: smooth;
+    }
+
     *,
     ::after,
     ::before,
