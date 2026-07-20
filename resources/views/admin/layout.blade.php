@@ -20,16 +20,6 @@
                         <p class="hidden sm:flex items-center"><i class="fa-brands fa-php fa-lg me-2" style="color:#777BB4" aria-hidden="true"></i> <span>{{ phpversion() }}</span></p>
                         <p class="hidden sm:flex items-center"><i class="fa-brands fa-laravel fa-lg me-2" style="color:#FF2D20" aria-hidden="true"></i> {{ \Illuminate\Foundation\Application::VERSION }}</p>
 
-                        <form action="{{ route('publish') }}" method="POST">
-                            @csrf
-                            <button type="submit"
-                                    class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-gray-700"
-                                    title="Přidá nahrané obrázky do gitu a odešle je na server">
-                                <i class="fa-brands fa-git-alt" aria-hidden="true"></i>
-                                <span class="hidden sm:inline">Publikovat</span>
-                            </button>
-                        </form>
-
                         <div class="relative" @click.outside="userMenuOpen = false">
                             <button type="button" class="flex cursor-pointer text-sm" :aria-expanded="userMenuOpen ? 'true' : 'false'" aria-controls="dropdown-user" @click="userMenuOpen = !userMenuOpen">
                                 <img src="data:image/jpeg;base64,{{ \Illuminate\Support\Facades\Auth::user()->profile_picture }}" class="w-8 h-8 rounded-full" alt="{{ \Illuminate\Support\Facades\Auth::user()->name }}" />
