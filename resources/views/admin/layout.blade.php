@@ -19,9 +19,6 @@
                     <div class="flex items-center ms-3 gap-4">
                         <p class="hidden sm:flex items-center"><i class="fa-brands fa-php fa-lg me-2" style="color:#777BB4" aria-hidden="true"></i> <span>{{ phpversion() }}</span></p>
                         <p class="hidden sm:flex items-center"><i class="fa-brands fa-laravel fa-lg me-2" style="color:#FF2D20" aria-hidden="true"></i> {{ \Illuminate\Foundation\Application::VERSION }}</p>
-                        @if (function_exists('proc_open'))
-                            <p class="hidden sm:flex items-center"><i class="fa-brands fa-php fa-lg me-2" style="color:#777BB4" aria-hidden="true"></i> <span>proc_open available</span></p>
-                        @endif
 
                         <form action="{{ route('publish') }}" method="POST">
                             @csrf
